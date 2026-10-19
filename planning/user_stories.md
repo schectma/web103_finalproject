@@ -19,7 +19,7 @@ Reference the Writing User Stories final project guide in the course portal for 
 
 5. As a student, I want to mark up (comment on) study plans, so that I can enhance them with my TA.
 
-6. As a student, I want to create assignments with due dates, so that I can organize my coursework.
+6. As a TA, I want to create assignments with due dates, so that my students can organize their coursework.
 
 7. As a TA, I want to edit or delete assignments, so that my students can keep their task lists accurate.
 
