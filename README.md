@@ -12,7 +12,7 @@ Designed and developed by: Riya Affrin, Jadine Delfin, Alston Dsouza, Alex Schec
 
 StudySync is a student productivity web application designed to help students organize their coursework, manage assignment deadlines, track academic progress, and collaborate with teaching assistants.
 
-The purpose of StudySync is to bring assignments, course information, and study plans together in one convenient platform. Teaching assistants can manage assignments and create study plans, while students can organize their work, prioritize tasks, and track their progress.
+The purpose of StudySync is to bring assignments, course information, and study plans together in one convenient platform. TAs can manage assignments and create study plans, while students can organize their work, prioritize tasks, and track their progress.
 
 ### Inspiration
 
