@@ -1,4 +1,4 @@
-# [your app name here]
+# StudySync
 
 CodePath WEB103 Final Project
 
@@ -10,7 +10,9 @@ Designed and developed by: Riya Affrin, Jadine Delfin, Alston Dsouza, Alex Schec
 
 ### Description and Purpose
 
-[text goes here]
+StudySync is a student productivity web application designed to help students organize their coursework, manage assignment deadlines, track academic progress, and collaborate with teaching assistants.
+
+The purpose of StudySync is to bring assignments, course information, and study plans together in one convenient platform. TAs can manage assignments and create study plans, while students can organize their work, prioritize tasks, and track their progress.
 
 ### Inspiration
 
