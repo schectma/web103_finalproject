@@ -14,7 +14,11 @@ Designed and developed by: Riya Affrin, Jadine Delfin, Alston Dsouza, Alex Schec
 
 ### Inspiration
 
-[text goes here]
+As students, we know how challenging it can be to balance assignments, deadlines, classes, and personal responsibilities. With information spread across different platforms, it can be easy to lose track of important tasks or feel overwhelmed.
+
+Our inspiration for this project comes from wanting to create a simple, organized space where students can manage their academic responsibilities more efficiently. We chose a student productivity app because it's a problem we can relate to personally, and we want to explore how technology can make everyday student life easier.
+
+While many productivity tools already exist, our goal is to focus specifically on students by bringing assignment tracking, deadlines, and study goals together in an easy-to-use application. We want to prioritize simplicity and useful features rather than making the experience unnecessarily complicated.
 
 ## Tech Stack
 
