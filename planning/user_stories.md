@@ -21,7 +21,7 @@ Reference the Writing User Stories final project guide in the course portal for 
 
 6. As a student, I want to create assignments with due dates, so that I can organize my coursework.
 
-7. As a student, I want to edit or delete assignments, so that I can keep my task list accurate.
+7. As a TA, I want to edit or delete assignments, so that my students can keep their task lists accurate.
 
 8. As a student, I want to mark assignments as completed, so that I can track my progress.
 
