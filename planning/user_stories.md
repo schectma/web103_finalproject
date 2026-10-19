@@ -18,3 +18,13 @@ Reference the Writing User Stories final project guide in the course portal for 
 4. As a TA, I want to create study plans, so that I can tailor and administer them to students.
 
 5. As a student, I want to mark up (comment on) study plans, so that I can enhance them with my TA.
+
+6. As a student, I want to create assignments with due dates, so that I can organize my coursework.
+
+7. As a student, I want to edit or delete assignments, so that I can keep my task list accurate.
+
+8. As a student, I want to mark assignments as completed, so that I can track my progress.
+
+9. As a student, I want to prioritize assignments, so that I can focus on the most important tasks first.
+
+10. As a student, I want to filter assignments by course, so that I can easily find tasks for a specific class.
