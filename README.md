@@ -30,25 +30,55 @@ Backend:
 
 ## Features
 
-### [Name of Feature 1]
+### Assignment Creation
 
-[short description goes here]
-
-[gif goes here]
-
-### [Name of Feature 2]
-
-[short description goes here]
+Addition of assignment objects replete with task, topic, grade, and deliverable data. TA only.
 
 [gif goes here]
 
-### [Name of Feature 3]
+### Course Tracking
 
-[short description goes here]
+Addition and linking of courses to assignments.
+
+[gif goes here]
+
+### Comments
+
+Fields for marking and notating assignments and plans.
 
 [gif goes here]
 
 ### [ADDITIONAL FEATURES GO HERE - ADD ALL FEATURES HERE IN THE FORMAT ABOVE; you will check these off and add gifs as you complete them]
+
+### Study Plan Creation
+
+Addition of written, formatted study plans linked to specific courses and assignments.
+
+[gif goes here]
+
+### Topic Tagging
+
+Additional field specifically for categorizing and associating courses, assignments, and plans.
+
+[gif goes here]
+
+### Traige System
+
+Rankings for prioritization of assignments.
+
+[gif goes here]
+
+### Assignment Completion
+
+Indicate submission or critical lapsing of assignment by clearing it from visible collections.
+
+[gif goes here]
+
+### Filtering
+
+Selective limitation of visible assignments, courses, and plans in a given view.
+
+[gif goes here]
 
 ## Installation Instructions
 
