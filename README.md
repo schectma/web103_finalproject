@@ -4,7 +4,7 @@ CodePath WEB103 Final Project
 
 Designed and developed by: Alston Dsouza, Alexander Schectman, Jadine Delfin-Watanabe, and Riya Affrin
 
-🔗 Link to deployed app: Coming soon
+🔗 Link to deployed app:
 
 ## About
 
@@ -24,48 +24,32 @@ While many productivity tools already exist, our goal is to focus specifically o
 
 ## Tech Stack
 
-Frontend: React
+Frontend:
 
-Backend: Node.js, Express.js, PostgreSQL
+Backend:
 
 ## Features
 
-### 1. Assignment Management
+### [Name of Feature 1]
 
-Teaching assistants can create, edit, and delete assignments with due dates, allowing students to view their assigned coursework.
+[short description goes here]
 
-[GIF to be added after implementation]
+[gif goes here]
 
-### 2. Assignment Prioritization
+### [Name of Feature 2]
 
-Students can assign priority levels to their assignments to focus on the most important or urgent tasks.
+[short description goes here]
 
-[GIF to be added after implementation]
+[gif goes here]
 
-### 3. Assignment Progress Tracking
+### [Name of Feature 3]
 
-Students can mark assignments as completed and track their progress across different courses.
+[short description goes here]
 
-[GIF to be added after implementation]
+[gif goes here]
 
-### 4. Course Organization
-
-Students can view course-related topics and filter assignments by course to keep their academic work organized.
-
-[GIF to be added after implementation]
-
-### 5. Study Plan Management
-
-Teaching assistants can create and manage study plans tailored to students' learning goals and academic needs.
-
-[GIF to be added after implementation]
-
-### 6. Study Plan Comments
-
-Students can comment on study plans to ask questions, share feedback, and collaborate with teaching assistants.
-
-[GIF to be added after implementation]
+### [ADDITIONAL FEATURES GO HERE - ADD ALL FEATURES HERE IN THE FORMAT ABOVE; you will check these off and add gifs as you complete them]
 
 ## Installation Instructions
 
-Installation instructions will be added as the application is developed.
+[instructions go here]
