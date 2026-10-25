@@ -4,7 +4,12 @@ Reference the Creating an Entity Relationship Diagram final project guide in the
 
 ## List of Pages
 
-[👉🏾👉🏾👉🏾 List the pages you expect to have in your app, with a ⭐ next to pages you have wireframed]
+- Dashboard
+- Course Tracking (My Courses)
+- Assignment Creation
+- Study Plan Creation
+- Comments
+- Assignment Details
 
 ## Wireframe 1: Dashboard (Student)
 ```text
