@@ -80,6 +80,7 @@ erDiagram
         int id PK
         int user_id FK
         int study_plan_id FK
+        int assignment_id FK
 
         text content
         timestamp created_at
@@ -102,6 +103,7 @@ erDiagram
 
     USERS ||--o{ COMMENTS : writes
     STUDY_PLANS ||--o{ COMMENTS : receives
+    ASSIGNMENTS ||--o{ COMMENTS : receives
 ```
 
 ## USERS
@@ -176,5 +178,6 @@ erDiagram
 | id | integer | Primary key |
 | user_id | integer | Foreign key referencing the user who wrote the comment |
 | study_plan_id | integer | Foreign key referencing the study plan being commented on |
+| assignment_id | integer | Foreign key referencing the assignment being commented on |
 | content | text | Comment text |
 | created_at | timestamp | Timestamp when comment was created |
