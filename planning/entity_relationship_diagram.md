@@ -45,6 +45,7 @@ erDiagram
         int topic_id FK
         int created_by FK
 
+        int priority
         string title
         text description
         datetime due_date
@@ -141,6 +142,7 @@ erDiagram
 | course_id | integer | Foreign key referencing the associated course |
 | topic_id | integer | Foreign key referencing the associated topic |
 | created_by | integer | Foreign key referencing the user who created the assignment |
+| priority | int | Triage level of assignment |
 | title | text | Assignment title |
 | description | text | Detailed assignment description |
 | due_date | datetime | Assignment due date and time |
