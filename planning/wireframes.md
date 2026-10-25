@@ -1,24 +1,30 @@
+
 # Wireframes
 
-Reference the Creating an Entity Relationship Diagram final project guide in the course portal for more information about how to complete this deliverable.
+These low-fidelity wireframes illustrate the StudySync course tracking and assignment management experience.
 
 ## List of Pages
 
 - Dashboard
-- Course Tracking (My Courses)
+- ⭐ Course Tracking (My Courses)
+- ⭐ Course Details
 - Assignment Creation
 - Study Plan Creation
 - Comments
-- Assignment Details
+- ⭐ Assignment Details
 
-## Wireframe 1: [page title]
+## Wireframe 1: My Courses
 
-[👉🏾👉🏾👉🏾 include wireframe 1]
+![StudySync My Courses](../Page%201%20%E2%80%94%20My%20Courses.png)
 
-## Wireframe 2: [page title]
+## Wireframe 2: Course Details
 
-[👉🏾👉🏾👉🏾 include wireframe 2]
+![StudySync Course Details](../Page%202%20%E2%80%94%20Course%20Details.png)
 
-## Wireframe 3: [page title]
+## Wireframe 3: Assignment Details
 
-[👉🏾👉🏾👉🏾 include wireframe 3]
+![StudySync Assignment Details](../Page%203%20%E2%80%94%20Assignment%20Details.png)
+
+## Figma Design
+
+https://www.figma.com/design/C9ovS8MvoGZD6q0EadFonn/StudySync---Course-Tracking-Wireframe?node-id=0-1
