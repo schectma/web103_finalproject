@@ -18,32 +18,22 @@ This unit, be sure to complete all tasks listed below. To complete a task, place
 
 ### 1. What went well during this unit?
 
-We successfully completed the required Milestone 2 tasks before the deadline. Our team worked on the entity relationship diagram (ERD), created wireframes for StudySync, and prepared the product pitch for Unit 7.
+This unit helped turn StudySync from an initial concept into a more structured project. Creating the wireframes and ERD encouraged us to think more carefully about the application's functionality, database relationships, and how users will interact with different features.
 
-The ERD helped us understand how our database tables, including users, courses, assignments, study plans, and comments, will connect.
-
-I also created three low-fidelity wireframes in Figma: My Courses, Course Details, and Assignment Details. These helped visualize how students will navigate the app, organize their courses, manage assignments, and track upcoming deadlines. After receiving feedback and making updates, I uploaded the wireframes to GitHub, and they were approved and merged into the main branch.
-
-We also gained experience working with GitHub issues, branches, pull requests, and reviews. Overall, it was good to see our original StudySync idea start becoming a more structured project.
+Working with GitHub issues, branches, and pull requests also provided valuable experience in organizing development tasks and tracking project progress. These activities established a stronger foundation for the implementation phase.
 
 ### 2. What were some challenges your group faced in this unit?
 
-One of our biggest challenges was communication and coordinating responsibilities across the team. There were times when it wasn't entirely clear who was working on certain tasks, and some of our work overlapped, particularly with the wireframes.
+One challenge was translating our initial project ideas into clear technical requirements and designs. Determining how different features should connect and how to represent them consistently across the wireframes and database schema required additional consideration.
 
-We also had different ideas about how to approach the design and which features to prioritize. Finding time for everyone to discuss these decisions together was challenging, especially while balancing other commitments and working toward the deadline.
+Another challenge was balancing the milestone deadline with the need to review and refine our work. This highlighted the importance of planning development tasks early and allowing sufficient time for testing, feedback, and improvements.
 
-Another challenge was making sure everyone had opportunities to review and provide feedback on shared work before it was finalized. Some tasks had to move forward quickly because of the deadline.
-
-Despite these challenges, we managed to complete the milestone requirements and make progress on the project.
+These experiences will help guide our approach as we move from planning into implementation.
 
 ### 3. What additional support will you need in upcoming units as you continue to work on your final project?
 
-Going forward, I think our team would benefit from having more regular meetings or check-ins so everyone knows what we're working on and can share updates, questions, and suggestions.
+Additional guidance from CodePath on GitHub branching strategies, CI/CD workflows, frontend and backend integration, database implementation, and deployment would be helpful as StudySync enters the development phase.
 
-It would also help to have clearer task assignments, agreed-upon priorities, and a process for reviewing pull requests and important project decisions before merging whenever possible.
+Examples of recommended project structures and best practices for integrating these technologies would also help the team make informed technical decisions and avoid common implementation issues.
 
-As we begin developing StudySync, additional guidance on GitHub branching strategies, CI/CD setup, connecting our frontend and backend, implementing the database, and organizing our development workflow would be useful.
-
-We should also coordinate and practice our Unit 7 product pitch so everyone understands the project and has an opportunity to participate.
-
-Overall, I hope we can continue improving our communication and teamwork while building StudySync together.
+Overall, the goal is to build on the planning completed during this milestone and apply these lessons to the development of StudySync.
