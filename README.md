@@ -62,7 +62,7 @@ Additional field specifically for categorizing and associating courses, assignme
 
 [gif goes here]
 
-### Traige System
+### Triage System
 
 Rankings for prioritization of assignments.
 
