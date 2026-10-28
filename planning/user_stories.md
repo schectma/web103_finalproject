@@ -28,3 +28,5 @@ Reference the Writing User Stories final project guide in the course portal for 
 9. As a student, I want to prioritize assignments, so that I can focus on the most important tasks first.
 
 10. As a student, I want to filter assignments by course, so that I can easily find tasks for a specific class.
+
+11. As a student, I want to create and manage courses and link assignments to each course, so that I can organize my coursework and track assignments by class.
