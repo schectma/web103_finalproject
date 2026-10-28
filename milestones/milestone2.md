@@ -18,12 +18,22 @@ This unit, be sure to complete all tasks listed below. To complete a task, place
 
 ### 1. What went well during this unit?
 
-Deadline hit.
+This unit helped turn StudySync from an initial concept into a more structured project. Creating the wireframes and ERD encouraged us to think more carefully about the application's functionality, database relationships, and how users will interact with different features.
+
+Working with GitHub issues, branches, and pull requests also provided valuable experience in organizing development tasks and tracking project progress. These activities established a stronger foundation for the implementation phase.
 
 ### 2. What were some challenges your group faced in this unit?
 
-N/A
+One challenge was translating our initial project ideas into clear technical requirements and designs. Determining how different features should connect and how to represent them consistently across the wireframes and database schema required additional consideration.
+
+Another challenge was balancing the milestone deadline with the need to review and refine our work. This highlighted the importance of planning development tasks early and allowing sufficient time for testing, feedback, and improvements.
+
+These experiences will help guide our approach as we move from planning into implementation.
 
 ### 3. What additional support will you need in upcoming units as you continue to work on your final project?
 
-N/A
+Additional guidance from CodePath on GitHub branching strategies, CI/CD workflows, frontend and backend integration, database implementation, and deployment would be helpful as StudySync enters the development phase.
+
+Examples of recommended project structures and best practices for integrating these technologies would also help the team make informed technical decisions and avoid common implementation issues.
+
+Overall, the goal is to build on the planning completed during this milestone and apply these lessons to the development of StudySync.
