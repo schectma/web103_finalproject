@@ -15,15 +15,15 @@ These low-fidelity wireframes illustrate the StudySync course tracking and assig
 
 ## Wireframe 1: My Courses
 
-![StudySync My Courses](../Page%201%20%E2%80%94%20My%20Courses.png)
+![StudySync My Courses](https://i.imgur.com/bWRmAKr.png)
 
 ## Wireframe 2: Course Details
 
-![StudySync Course Details](../Page%202%20%E2%80%94%20Course%20Details.png)
+![StudySync Course Details](https://i.imgur.com/JIHEL6D.png)
 
 ## Wireframe 3: Assignment Details
 
-![StudySync Assignment Details](../Page%203%20%E2%80%94%20Assignment%20Details.png)
+![StudySync Assignment Details](https://i.imgur.com/bpal7VY.png)
 
 ## Figma Design
 
