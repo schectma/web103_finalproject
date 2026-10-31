@@ -8,6 +8,12 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
+// Course Tracking: retrieve all courses
+// Temporary placeholder until the database is connected
+app.get('/api/courses', (req, res) => {
+  res.json([])
+})
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
 })
