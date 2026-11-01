@@ -4,7 +4,7 @@ CodePath WEB103 Final Project
 
 Designed and developed by: Riya Affrin, Jadine Delfin, Alston Dsouza, Alex Schectman
 
-🔗 Link to deployed app:
+🔗 Link to deployed app: https://web103-finalproject-xoeo.onrender.com/
 
 ## About
 
