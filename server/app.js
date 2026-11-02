@@ -1,6 +1,7 @@
 import express from 'express'
 import pool from './db.js'
 import { validateStudyPlan } from './studyPlanValidation.js'
+import { createStudyPlan } from './studyPlanQueries.js'
 
 // Builds the app without starting it, so tests can import it directly.
 // server.js is what starts listening on a port.
@@ -33,7 +34,7 @@ app.get('/api/courses/:id', (req, res) => {
 })
 
 // Study Plan Creation: validate incoming study plan data
-app.post('/api/study-plans', (req, res) => {
+app.post('/api/study-plans', async (req, res) => {
   const result = validateStudyPlan(req.body)
 
   if (!result.valid) {
@@ -42,11 +43,31 @@ app.post('/api/study-plans', (req, res) => {
     })
   }
 
-  // Database insertion will be implemented after the
-  // study_plans table is available.
-  return res.status(501).json({
-    error: 'Study plan creation is not yet implemented'
-  })
+  try {
+    const { course_id, topic_id, created_by, title, content } = req.body
+
+    const studyPlan = await createStudyPlan({
+      course_id,
+      topic_id,
+      created_by,
+      title,
+      content
+    })
+
+    return res.status(201).json(studyPlan)
+  } catch (error) {
+    if (error.code === '23503') {
+      return res.status(400).json({
+        error: 'Referenced course, topic, or user does not exist'
+      })
+    }
+
+    console.error('Error creating study plan:', error)
+
+    return res.status(500).json({
+      error: 'Failed to create study plan'
+    })
+  }
 })
 
 export default app
