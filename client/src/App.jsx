@@ -1,3 +1,4 @@
+import React from "react"
 const courses = [
   { id: 1, name: 'Biology 101' },
   { id: 2, name: 'Calculus 200' },
