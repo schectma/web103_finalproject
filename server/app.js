@@ -1,9 +1,13 @@
 import express from 'express'
 import pool from './db.js'
+import { validateStudyPlan } from './studyPlanValidation.js'
 
 // Builds the app without starting it, so tests can import it directly.
 // server.js is what starts listening on a port.
 const app = express()
+
+// Parse JSON request bodies for API endpoints
+app.use(express.json())
 
 // Render's health check hits this to confirm the deploy is live and the database is reachable
 app.get('/api/health', async (req, res) => {
@@ -26,6 +30,23 @@ app.get('/api/courses', (req, res) => {
 // Temporary placeholder until the database is connected
 app.get('/api/courses/:id', (req, res) => {
   res.status(404).json({ error: 'Course not found' })
+})
+
+// Study Plan Creation: validate incoming study plan data
+app.post('/api/study-plans', (req, res) => {
+  const result = validateStudyPlan(req.body)
+
+  if (!result.valid) {
+    return res.status(400).json({
+      errors: result.errors
+    })
+  }
+
+  // Database insertion will be implemented after the
+  // study_plans table is available.
+  return res.status(501).json({
+    error: 'Study plan creation is not yet implemented'
+  })
 })
 
 export default app
