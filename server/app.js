@@ -10,7 +10,7 @@ const app = express()
 // Parse JSON request bodies for API endpoints
 app.use(express.json())
 
-// Render's health check hits this to confirm the deploy is live and the database is reachable
+// Render's health check confirms the app and database are reachable
 app.get('/api/health', async (req, res) => {
   try {
     await pool.query('SELECT 1')
@@ -33,7 +33,7 @@ app.get('/api/courses/:id', (req, res) => {
   res.status(404).json({ error: 'Course not found' })
 })
 
-// Study Plan Creation: validate incoming study plan data
+// Study Plan Creation: validate and save a study plan
 app.post('/api/study-plans', async (req, res) => {
   const result = validateStudyPlan(req.body)
 
@@ -56,6 +56,15 @@ app.post('/api/study-plans', async (req, res) => {
 
     return res.status(201).json(studyPlan)
   } catch (error) {
+    // The topic exists but does not belong to the selected course,
+    // or the topic does not exist.
+    if (error.code === 'INVALID_TOPIC_COURSE') {
+      return res.status(400).json({
+        error: 'Topic does not belong to the selected course'
+      })
+    }
+
+    // PostgreSQL foreign-key violation
     if (error.code === '23503') {
       return res.status(400).json({
         error: 'Referenced course, topic, or user does not exist'
