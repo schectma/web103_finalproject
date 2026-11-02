@@ -7,6 +7,7 @@ const data = JSON.parse(readFileSync(new URL('./data/data.json', import.meta.url
 // Children first so foreign keys never block a drop
 const dropAllTables = async () => {
   await pool.query(`
+    DROP TABLE IF EXISTS study_plans;
     DROP TABLE IF EXISTS assignments;
     DROP TABLE IF EXISTS topics;
     DROP TABLE IF EXISTS courses;
@@ -70,6 +71,23 @@ const createAssignmentsTable = async () => {
   console.log('assignments table created successfully')
 }
 
+const createStudyPlansTable = async () => {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS study_plans (
+      id serial PRIMARY KEY,
+      course_id integer NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+      topic_id integer REFERENCES topics(id) ON DELETE SET NULL,
+      created_by integer NOT NULL REFERENCES users(id),
+      title text NOT NULL,
+      content text NOT NULL,
+      created_at timestamp NOT NULL DEFAULT NOW(),
+      updated_at timestamp NOT NULL DEFAULT NOW()
+    );
+    CREATE INDEX IF NOT EXISTS study_plans_course_id_idx ON study_plans(course_id);
+  `)
+  console.log('study_plans table created successfully')
+}
+
 const seedUsersTable = async () => {
   for (const user of data.users) {
     await pool.query(
@@ -110,6 +128,16 @@ const seedAssignmentsTable = async () => {
   console.log('assignments seeded successfully')
 }
 
+const seedStudyPlansTable = async () => {
+  for (const plan of data.study_plans) {
+    await pool.query(
+      'INSERT INTO study_plans (course_id, topic_id, created_by, title, content) VALUES ($1, $2, $3, $4, $5)',
+      [plan.course_id, plan.topic_id, plan.created_by, plan.title, plan.content]
+    )
+  }
+  console.log('study_plans seeded successfully')
+}
+
 const resetDatabase = async () => {
   try {
     await dropAllTables()
@@ -117,10 +145,12 @@ const resetDatabase = async () => {
     await createCoursesTable()
     await createTopicsTable()
     await createAssignmentsTable()
+    await createStudyPlansTable()
     await seedUsersTable()
     await seedCoursesTable()
     await seedTopicsTable()
     await seedAssignmentsTable()
+    await seedStudyPlansTable()
   } catch (err) {
     console.error('error resetting database', err.message)
     process.exitCode = 1
