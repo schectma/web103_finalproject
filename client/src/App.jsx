@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react'
 
-const courses = [
-  { id: 1, name: 'Biology 101' },
-  { id: 2, name: 'Calculus 200' },
-  { id: 3, name: 'English 110' },
-  { id: 4, name: 'Computer Science 201' }
-]
+const emptyForm = {
+  course_id: '',
+  priority: '',
+  title: '',
+  description: '',
+  due_date: ''
+}
 
-const assignments = [
-  { id: 1, title: 'Lab report', course: 'Biology 101', due: 'Friday' },
-  { id: 2, title: 'Quiz 2', course: 'Calculus 200', due: 'Monday' },
-  { id: 3, title: 'Reading response', course: 'English 110', due: 'Tuesday' }
-]
+const formatDue = (due) => new Date(due).toLocaleDateString()
 
 function App() {
   const [health, setHealth] = useState('checking...')
+  const [courses, setCourses] = useState([])
+  const [assignments, setAssignments] = useState([])
+  const [form, setForm] = useState(emptyForm)
+  const [errors, setErrors] = useState([])
+  const [success, setSuccess] = useState('')
   const [page, setPage] = useState('dashboard')
 
   useEffect(() => {
@@ -23,6 +25,65 @@ function App() {
       .then((data) => setHealth(`${data.status} (db: ${data.db})`))
       .catch(() => setHealth('unreachable'))
   }, [])
+
+  // Load real courses, then the assignments belonging to each
+  useEffect(() => {
+    fetch('/api/courses')
+      .then((res) => res.json())
+      .then(async (rows) => {
+        setCourses(rows)
+        const lists = await Promise.all(
+          rows.map((course) =>
+            fetch(`/api/courses/${course.id}/assignments`).then((res) => res.json())
+          )
+        )
+        setAssignments(lists.flat().sort((a, b) => new Date(a.due_date) - new Date(b.due_date)))
+      })
+      .catch(() => setErrors(['Could not load courses']))
+  }, [])
+
+  const courseName = (id) => courses.find((course) => course.id === id)?.course_name
+
+  const updateField = (event) =>
+    setForm({ ...form, [event.target.name]: event.target.value })
+
+  const submitAssignment = async (event) => {
+    event.preventDefault()
+    setErrors([])
+    setSuccess('')
+
+    // The course's TA is the creator until auth exists
+    const course = courses.find((c) => c.id === Number(form.course_id))
+
+    try {
+      const res = await fetch('/api/assignments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          course_id: course ? course.id : null,
+          created_by: course ? course.ta_id : null,
+          priority: form.priority === '' ? null : Number(form.priority),
+          title: form.title,
+          description: form.description === '' ? null : form.description,
+          due_date: form.due_date
+        })
+      })
+      const data = await res.json()
+
+      if (!res.ok) {
+        setErrors(data.errors ?? [data.error ?? 'Could not create assignment'])
+        return
+      }
+
+      setAssignments(
+        [...assignments, data].sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
+      )
+      setForm(emptyForm)
+      setSuccess(`Created "${data.title}"`)
+    } catch {
+      setErrors(['Server unreachable'])
+    }
+  }
 
   return (
     <div className="app-shell">
@@ -98,7 +159,7 @@ function App() {
             <ul className="item-list">
               {courses.map((course) => (
                 <li key={course.id}>
-                  <span className="item-name">{course.name}</span>
+                  <span className="item-name">{course.course_name}</span>
                   <span className="item-tag">Course</span>
                 </li>
               ))}
@@ -112,10 +173,10 @@ function App() {
                 <li key={assignment.id}>
                   <div className="assignment-info">
                     <span className="item-name">{assignment.title}</span>
-                    <small>{assignment.course}</small>
+                    <small>{courseName(assignment.course_id)}</small>
                   </div>
                   <span className="item-tag due-tag">
-                    {assignment.due}
+                    {formatDue(assignment.due_date)}
                   </span>
                 </li>
               ))}
@@ -130,7 +191,7 @@ function App() {
         <section className="welcome-section">
           <div>
             <h1>Assignments</h1>
-            <p>Every assignment across your courses.</p>
+            <p>Create assignments and see what is due.</p>
           </div>
         </section>
 
@@ -141,19 +202,82 @@ function App() {
               <li key={assignment.id}>
                 <div className="assignment-info">
                   <span className="item-name">{assignment.title}</span>
-                  <small>{assignment.course}</small>
+                  <small>{courseName(assignment.course_id)}</small>
                 </div>
-                <span className="item-tag due-tag">{assignment.due}</span>
+                <span className="item-tag due-tag">
+                  {formatDue(assignment.due_date)}
+                </span>
               </li>
             ))}
           </ul>
         </section>
+
+        <section className="content-card form-card">
+          <h2>Create assignment</h2>
+          <form className="assignment-form" onSubmit={submitAssignment}>
+            <label>
+              Course
+              <select name="course_id" value={form.course_id} onChange={updateField} required>
+                <option value="">Select a course</option>
+                {courses.map((course) => (
+                  <option key={course.id} value={course.id}>
+                    {course.course_name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              Title
+              <input name="title" value={form.title} onChange={updateField} required />
+            </label>
+
+            <label>
+              Due date
+              <input
+                type="datetime-local"
+                name="due_date"
+                value={form.due_date}
+                onChange={updateField}
+                required
+              />
+            </label>
+
+            <label>
+              Priority
+              <input
+                type="number"
+                min="1"
+                name="priority"
+                value={form.priority}
+                onChange={updateField}
+              />
+            </label>
+
+            <label className="wide">
+              Description
+              <textarea
+                name="description"
+                rows="3"
+                value={form.description}
+                onChange={updateField}
+              />
+            </label>
+
+            {errors.length > 0 && (
+              <ul className="form-errors wide" role="alert">
+                {errors.map((error) => (
+                  <li key={error}>{error}</li>
+                ))}
+              </ul>
+            )}
+            {success && <p className="form-success wide" role="status">{success}</p>}
+
+            <button type="submit" className="wide">Create assignment</button>
+          </form>
+        </section>
           </>
         )}
-
-        <p className="demo-note">
-          Demo dashboard — sample data shown until the API is connected.
-        </p>
 
         <p className="api-status" role="status">
           API status: {health}
