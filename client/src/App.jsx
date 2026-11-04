@@ -15,6 +15,7 @@ const assignments = [
 
 function App() {
   const [health, setHealth] = useState('checking...')
+  const [page, setPage] = useState('dashboard')
 
   useEffect(() => {
     fetch('/api/health')
@@ -32,11 +33,21 @@ function App() {
         </div>
 
         <nav className="navigation" aria-label="Main navigation">
-          <span className="nav-link active" aria-current="page">
+          <button
+            type="button"
+            className={page === 'dashboard' ? 'nav-link active' : 'nav-link'}
+            onClick={() => setPage('dashboard')}
+          >
             Dashboard
-          </span>
+          </button>
           <span className="nav-link">Courses</span>
-          <span className="nav-link">Assignments</span>
+          <button
+            type="button"
+            className={page === 'assignments' ? 'nav-link active' : 'nav-link'}
+            onClick={() => setPage('assignments')}
+          >
+            Assignments
+          </button>
           <span className="nav-link">Study Plans</span>
         </nav>
 
@@ -46,6 +57,8 @@ function App() {
       </header>
 
       <main className="dashboard">
+        {page === 'dashboard' && (
+          <>
         <section className="welcome-section">
           <div>
             <h1>Good morning!</h1>
@@ -109,6 +122,34 @@ function App() {
             </ul>
           </article>
         </section>
+          </>
+        )}
+
+        {page === 'assignments' && (
+          <>
+        <section className="welcome-section">
+          <div>
+            <h1>Assignments</h1>
+            <p>Every assignment across your courses.</p>
+          </div>
+        </section>
+
+        <section className="content-card">
+          <h2>All assignments</h2>
+          <ul className="item-list">
+            {assignments.map((assignment) => (
+              <li key={assignment.id}>
+                <div className="assignment-info">
+                  <span className="item-name">{assignment.title}</span>
+                  <small>{assignment.course}</small>
+                </div>
+                <span className="item-tag due-tag">{assignment.due}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+          </>
+        )}
 
         <p className="demo-note">
           Demo dashboard — sample data shown until the API is connected.

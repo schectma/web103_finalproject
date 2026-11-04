@@ -254,3 +254,16 @@ h1 {
     font-size: 26px;
   }
 }
+
+button.nav-link {
+  border: none;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button.nav-link.active {
+  background: #e9e7ff;
+  color: #4f46c9;
+}
