@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import StudyPlanForm from './components/StudyPlanForm.jsx'
+import { CURRENT_USER_ID } from './currentUser.js'
 
 const emptyForm = {
   course_id: '',
@@ -159,8 +160,6 @@ function App() {
     if (submitting) return
     setSubmitting(true)
 
-    // TEMPORARY: no auth yet, so the course's TA stands in as creator.
-    // Replace with the logged-in user's id once auth exists.
     const course = courses.find((c) => c.id === Number(form.course_id))
 
     try {
@@ -169,7 +168,7 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           course_id: course ? course.id : null,
-          created_by: course ? course.ta_id : null,
+          created_by: CURRENT_USER_ID,
           priority: form.priority === '' ? null : Number(form.priority),
           title: form.title,
           description: form.description === '' ? null : form.description,
