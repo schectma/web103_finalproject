@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-export default function StudyPlanForm() {
+export default function StudyPlanForm({ creatorId = null }) {
   const [courses, setCourses] = useState([])
   const [loadingCourses, setLoadingCourses] = useState(true)
   const [courseError, setCourseError] = useState('')
@@ -14,6 +14,8 @@ export default function StudyPlanForm() {
 
   const [errors, setErrors] = useState([])
   const [success, setSuccess] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const submittingRef = useRef(false)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -64,8 +66,12 @@ export default function StudyPlanForm() {
     setSuccess('')
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
+
+    if (submittingRef.current) return
+
+    setSuccess('')
 
     const validationErrors = []
 
@@ -93,12 +99,63 @@ export default function StudyPlanForm() {
       validationErrors.push('Please enter study plan content.')
     }
 
+    if (!Number.isSafeInteger(creatorId) || creatorId <= 0) {
+      validationErrors.push(
+        'Saving is unavailable until user identification is configured.'
+      )
+    }
+
     setErrors(validationErrors)
 
-    if (validationErrors.length === 0) {
-      setSuccess(
-        'Study plan validated successfully. Saving will be enabled after user authentication is integrated.'
-      )
+    if (validationErrors.length > 0) return
+
+    submittingRef.current = true
+    setSubmitting(true)
+
+    try {
+      const response = await fetch('/api/study-plans', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          course_id: Number(form.course_id),
+          topic_id: form.topic_id ? Number(form.topic_id) : null,
+          created_by: creatorId,
+          title: form.title.trim(),
+          content: form.content.trim()
+        })
+      })
+
+      const data = await response.json().catch(() => null)
+
+      if (!response.ok) {
+        const messages = Array.isArray(data?.errors) && data.errors.length > 0
+          ? data.errors
+          : [data?.error || 'Unable to save study plan.']
+
+        setErrors(messages)
+        return
+      }
+
+      if (response.status !== 201 || !data || typeof data !== 'object') {
+        setErrors(['Unexpected response from server. Please verify whether the study plan was saved.'])
+        return
+      }
+
+      setErrors([])
+      setSuccess('Study plan saved successfully!')
+      setForm({
+        course_id: '',
+        topic_id: '',
+        title: '',
+        content: ''
+      })
+    } catch {
+      setErrors(['Unable to save study plan. Please try again.'])
+    } finally {
+      submittingRef.current = false
+      setSubmitting(false)
     }
   }
 
@@ -106,6 +163,13 @@ export default function StudyPlanForm() {
     <section className="content-card">
       <h2>Create Study Plan</h2>
       <p>Organize your study goals and notes.</p>
+
+      {(!Number.isSafeInteger(creatorId) || creatorId <= 0) && (
+        <p role="status">
+          Study plan saving is temporarily unavailable until user
+          identification is configured.
+        </p>
+      )}
 
       <form className="study-plan-form" onSubmit={handleSubmit}>
         <div>
@@ -189,9 +253,15 @@ export default function StudyPlanForm() {
 
         <button
           type="submit"
-          disabled={loadingCourses || Boolean(courseError)}
+          disabled={
+            loadingCourses ||
+            Boolean(courseError) ||
+            submitting ||
+            !Number.isSafeInteger(creatorId) ||
+            creatorId <= 0
+          }
         >
-          Validate Study Plan
+          {submitting ? 'Saving Study Plan...' : 'Save Study Plan'}
         </button>
       </form>
     </section>
