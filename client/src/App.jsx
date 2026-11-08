@@ -284,7 +284,8 @@ function App() {
         <select
           className="role-switcher"
           aria-label="Mock user"
-          value={currentUserId}
+          value={currentUserId ?? ''}
+          disabled={users.length === 0}
           onChange={(event) => setCurrentUserId(Number(event.target.value))}
         >
           {users.map((user) => (

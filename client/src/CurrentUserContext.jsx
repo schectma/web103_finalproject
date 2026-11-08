@@ -35,7 +35,8 @@ export function CurrentUserProvider({ children }) {
 
   // Once users load, a stored id that no longer exists falls back to the first user.
   const currentUser = users.find((user) => user.id === id) ?? users[0]
-  const activeId = currentUser?.id ?? id
+  // activeId is null until the id is verified against the fetched users.
+  const activeId = currentUser?.id ?? null
   // Until users load the role is 'student'.
   const role = currentUser?.role ?? 'student'
 
