@@ -519,9 +519,11 @@ const [role, setRole] = useState('student')
                   </h2>
 
                   {selectedCourse === null ? (
-                    <p className="empty-message">
-                      Select a course to view its assignments.
-                    </p>
+                    courses.length === 0 ? null : (
+                      <p className="empty-message">
+                        Select a course to view its assignments.
+                      </p>
+                    )
                   ) : (
                     <ul className="item-list">
                       {assignments
