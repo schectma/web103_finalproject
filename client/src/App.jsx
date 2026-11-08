@@ -724,7 +724,11 @@ const [role, setRole] = useState('student')
               </div>
             </section>
 
-            <StudyPlanForm />
+            {role === 'ta' ? (
+              <StudyPlanForm />
+            ) : (
+              <p>Only TAs can create study plans.</p>
+            )}
           </>
         )}
 
