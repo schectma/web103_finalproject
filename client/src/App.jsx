@@ -27,7 +27,7 @@ const formatDue = (due) => {
 function App() {
   const [health, setHealth] = useState('checking...')
   const [page, setPage] = useState('dashboard')
-const { id: currentUserId, users, setCurrentUserId } = useCurrentUser()
+  const { id: currentUserId, role, users, setCurrentUserId } = useCurrentUser()
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [form, setForm] = useState(emptyForm)
   const [formErrors, setFormErrors] = useState([])
