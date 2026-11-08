@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import StudyPlanForm from './components/StudyPlanForm.jsx'
+import { useCurrentUser } from './useCurrentUser.js'
 
 const emptyForm = {
   course_id: '',
@@ -26,7 +27,7 @@ const formatDue = (due) => {
 function App() {
   const [health, setHealth] = useState('checking...')
   const [page, setPage] = useState('dashboard')
-const [role, setRole] = useState('student')
+  const { id: currentUserId, role, users, setCurrentUserId } = useCurrentUser()
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [form, setForm] = useState(emptyForm)
   const [formErrors, setFormErrors] = useState([])
@@ -282,12 +283,15 @@ const [role, setRole] = useState('student')
 
         <select
           className="role-switcher"
-          aria-label="Mock role"
-          value={role}
-          onChange={(event) => setRole(event.target.value)}
+          aria-label="Mock user"
+          value={currentUserId}
+          onChange={(event) => setCurrentUserId(Number(event.target.value))}
         >
-          <option value="student">Student</option>
-          <option value="ta">TA</option>
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.first_name} {user.last_name} ({user.role === 'ta' ? 'TA' : 'Student'})
+            </option>
+          ))}
         </select>
       </header>
 
