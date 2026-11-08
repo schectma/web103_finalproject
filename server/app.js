@@ -6,6 +6,7 @@ import { validateStudyPlan } from './studyPlanValidation.js'
 import { createStudyPlan } from './studyPlanQueries.js'
 import { validateCourse } from './courseValidation.js'
 import assignmentRoutes from './routes/assignments.js'
+import userRoutes from './routes/users.js'
 
 // Builds the app without starting it.
 // server.js starts listening on a port.
@@ -169,6 +170,7 @@ app.post('/api/courses', async (req, res) => {
 })
 
 app.use('/api/assignments', assignmentRoutes)
+app.use('/api/users', userRoutes)
 // Study Plan Creation: validate and save a study plan
 app.post('/api/study-plans', async (req, res) => {
   const result = validateStudyPlan(req.body)
