@@ -26,6 +26,7 @@ const formatDue = (due) => {
 function App() {
   const [health, setHealth] = useState('checking...')
   const [page, setPage] = useState('dashboard')
+const [role, setRole] = useState('student')
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [form, setForm] = useState(emptyForm)
   const [formErrors, setFormErrors] = useState([])
@@ -279,9 +280,15 @@ function App() {
           </button>
         </nav>
 
-        <div className="profile-avatar" aria-label="Demo user">
-          ME
-        </div>
+        <select
+          className="role-switcher"
+          aria-label="Mock role"
+          value={role}
+          onChange={(event) => setRole(event.target.value)}
+        >
+          <option value="student">Student</option>
+          <option value="ta">TA</option>
+        </select>
       </header>
 
       <main className="dashboard">
@@ -634,6 +641,7 @@ function App() {
                 )}
               </section>
 
+              {role === 'ta' && (
               <section className="content-card form-card">
                 <h2>Create assignment</h2>
                 <form className="assignment-form" onSubmit={submitAssignment}>
@@ -700,6 +708,7 @@ function App() {
                   </button>
                 </form>
               </section>
+              )}
               </>
             )}
           </>
@@ -717,7 +726,11 @@ function App() {
               </div>
             </section>
 
-            <StudyPlanForm />
+            {role === 'ta' ? (
+              <StudyPlanForm />
+            ) : (
+              <p>Only TAs can create study plans.</p>
+            )}
           </>
         )}
 

@@ -1,9 +1,12 @@
+import { existsSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import express from 'express'
 import pool from './db.js'
 import { validateStudyPlan } from './studyPlanValidation.js'
 import { createStudyPlan } from './studyPlanQueries.js'
 import { validateCourse } from './courseValidation.js'
 import assignmentRoutes from './routes/assignments.js'
+import userRoutes from './routes/users.js'
 
 // Builds the app without starting it.
 // server.js starts listening on a port.
@@ -167,6 +170,7 @@ app.post('/api/courses', async (req, res) => {
 })
 
 app.use('/api/assignments', assignmentRoutes)
+app.use('/api/users', userRoutes)
 // Study Plan Creation: validate and save a study plan
 app.post('/api/study-plans', async (req, res) => {
   const result = validateStudyPlan(req.body)
@@ -212,5 +216,15 @@ app.post('/api/study-plans', async (req, res) => {
     })
   }
 })
+
+// Serve the built React client (npm run build in client/), with an SPA fallback.
+// /api/* is never rewritten, so unknown API paths still return 404.
+const clientDist = process.env.CLIENT_DIST || fileURLToPath(new URL('../client/dist', import.meta.url))
+if (existsSync(clientDist)) {
+  app.use(express.static(clientDist))
+  app.get(/^\/(?!api(\/|$)).*/, (req, res) => {
+    res.sendFile('index.html', { root: clientDist })
+  })
+}
 
 export default app
