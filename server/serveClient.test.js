@@ -1,12 +1,13 @@
-import test from 'node:test'
+import test, { after } from 'node:test'
 import assert from 'node:assert/strict'
 import { once } from 'node:events'
-import { mkdtempSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
 // CLIENT_DIST must be set before app.js is imported
 const dist = mkdtempSync(join(tmpdir(), 'studysync-dist-'))
+after(() => rmSync(dist, { recursive: true, force: true }))
 writeFileSync(join(dist, 'index.html'), '<div id="root">spa</div>')
 process.env.CLIENT_DIST = dist
 const { default: app } = await import('./app.js')
