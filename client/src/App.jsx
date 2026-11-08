@@ -639,6 +639,7 @@ const [role, setRole] = useState('student')
                 )}
               </section>
 
+              {role === 'ta' && (
               <section className="content-card form-card">
                 <h2>Create assignment</h2>
                 <form className="assignment-form" onSubmit={submitAssignment}>
@@ -705,6 +706,7 @@ const [role, setRole] = useState('student')
                   </button>
                 </form>
               </section>
+              )}
               </>
             )}
           </>
