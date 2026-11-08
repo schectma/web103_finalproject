@@ -168,7 +168,10 @@ const { id: currentUserId, users, setCurrentUserId } = useCurrentUser()
     try {
       const res = await fetch('/api/assignments', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-User-Id': String(currentUserId)
+        },
         body: JSON.stringify({
           course_id: course ? course.id : null,
           created_by: course ? course.ta_id : null,

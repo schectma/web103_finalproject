@@ -1,4 +1,4 @@
-import test from 'node:test'
+import test, { mock } from 'node:test'
 import assert from 'node:assert/strict'
 import { once } from 'node:events'
 import app from './app.js'
@@ -33,7 +33,7 @@ const validBody = () => ({
 const post = (baseUrl, body) =>
   fetch(`${baseUrl}/api/assignments`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'X-User-Id': '1' },
     body: JSON.stringify(body)
   })
 
@@ -44,17 +44,36 @@ test('POST /api/assignments', async (t) => {
 
   const BASE_URL = `http://127.0.0.1:${server.address().port}`
 
-  await t.test('returns 400 with validation errors for an invalid body', async () => {
-    const response = await post(BASE_URL, { course_id: 0, title: '' })
+  // These cases need no database: mock the TA lookup done by the currentUser middleware
+  const mockTA = () =>
+    mock.method(pool, 'query', async () => ({ rows: [{ id: 1, role: 'ta' }] }))
 
-    assert.equal(response.status, 400)
-    assert.ok((await response.json()).errors.length > 0)
+  await t.test('returns 400 with validation errors for an invalid body', async () => {
+    const queryMock = mockTA()
+
+    try {
+      const response = await post(BASE_URL, { course_id: 0, title: '' })
+
+      assert.equal(response.status, 400)
+      assert.ok((await response.json()).errors.length > 0)
+    } finally {
+      queryMock.mock.restore()
+    }
   })
 
   await t.test('returns 400 when the body is empty', async () => {
-    const response = await fetch(`${BASE_URL}/api/assignments`, { method: 'POST' })
+    const queryMock = mockTA()
 
-    assert.equal(response.status, 400)
+    try {
+      const response = await fetch(`${BASE_URL}/api/assignments`, {
+        method: 'POST',
+        headers: { 'X-User-Id': '1' }
+      })
+
+      assert.equal(response.status, 400)
+    } finally {
+      queryMock.mock.restore()
+    }
   })
 
   // The remaining cases write to the database, so they only run against a disposable one
