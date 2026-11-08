@@ -33,11 +33,14 @@ export function CurrentUserProvider({ children }) {
     }
   }
 
-  // Until users load (or if the stored id is stale) the role is 'student'.
-  const role = users.find((user) => user.id === id)?.role ?? 'student'
+  // Once users load, a stored id that no longer exists falls back to the first user.
+  const currentUser = users.find((user) => user.id === id) ?? users[0]
+  const activeId = currentUser?.id ?? id
+  // Until users load the role is 'student'.
+  const role = currentUser?.role ?? 'student'
 
   return (
-    <CurrentUserContext.Provider value={{ id, role, users, setCurrentUserId }}>
+    <CurrentUserContext.Provider value={{ id: activeId, role, users, setCurrentUserId }}>
       {children}
     </CurrentUserContext.Provider>
   )
