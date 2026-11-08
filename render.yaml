@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: web103-finalproject
+    runtime: node
+    buildCommand: npm ci --include=dev --prefix client && npm run build --prefix client && npm ci --prefix server
+    startCommand: node server/server.js
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
