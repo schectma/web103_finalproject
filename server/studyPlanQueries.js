@@ -54,3 +54,21 @@ export async function createStudyPlan({
 
   return result.rows[0]
 }
+
+export async function listStudyPlans() {
+  const result = await pool.query(`
+    SELECT
+      id,
+      course_id,
+      topic_id,
+      created_by,
+      title,
+      content,
+      created_at,
+      updated_at
+    FROM study_plans
+    ORDER BY created_at DESC, id DESC
+  `)
+
+  return result.rows
+}
