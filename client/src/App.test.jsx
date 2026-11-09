@@ -4,7 +4,7 @@ import App from './App.jsx'
 import { CurrentUserProvider } from './CurrentUserContext.jsx'
 
 vi.mock('./components/StudyPlanForm.jsx', () => ({
-  default: () => <div>Mock Study Plan Form</div>
+  default: ({ creatorId }) => <div data-testid="study-plan-creator">{creatorId ?? "no creator"}</div>
 }))
 
 test('renders the Course Tracking navigation', () => {
@@ -311,4 +311,34 @@ test('displays an error when course assignments cannot load', async () => {
     screen.queryByText('Loading courses...')
   ).not.toBeInTheDocument()
 
+})
+
+test('passes the selected TA ID to the Study Plan form', async () => {
+  vi.stubGlobal('fetch', vi.fn(async (url) => {
+    if (url === '/api/users') {
+      return {
+        ok: true,
+        json: async () => [
+          { id: 7, first_name: 'Test', last_name: 'TA', role: 'ta' }
+        ]
+      }
+    }
+
+    return {
+      ok: true,
+      json: async () => url === '/api/health'
+        ? { status: 'ok', db: 'connected' }
+        : []
+    }
+  }))
+
+  const user = (await import('@testing-library/user-event')).default.setup()
+
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+
+  await user.click(screen.getByRole('button', { name: /study plans/i }))
+
+  expect(
+    await screen.findByTestId('study-plan-creator')
+  ).toHaveTextContent('7')
 })
