@@ -72,6 +72,8 @@ test('displays courses and their assignment counts', async () => {
       ? { status: 'ok', db: 'connected' }
       : url === '/api/courses'
         ? courses
+        : url === '/api/study-plans'
+          ? []
         : url === '/api/courses/1/assignments'
           ? assignments[1]
           : url === '/api/courses/2/assignments'
@@ -295,6 +297,10 @@ test('displays an error when course assignments cannot load', async () => {
         { id: 1, course_name: 'Web Development', ta_id: 1 }
       ]
     }
+  }
+
+  if (url === '/api/study-plans') {
+    return { ok: true, json: async () => [] }
   }
 
   if (url === '/api/courses/1/assignments') {

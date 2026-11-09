@@ -93,6 +93,20 @@ function App() {
           throw new Error('Invalid courses response')
         }
 
+        const studyPlansResponse = await fetch('/api/study-plans', {
+          signal: controller.signal
+        })
+
+        if (!studyPlansResponse.ok) {
+          throw new Error('Could not load study plans')
+        }
+
+        const studyPlanData = await studyPlansResponse.json()
+
+        if (!Array.isArray(studyPlanData)) {
+          throw new Error('Invalid study plans response')
+        }
+
         const assignmentLists = await Promise.all(
           courseData.map(async (course) => {
             const response = await fetch(
@@ -397,7 +411,7 @@ function App() {
 
                     <div>
                       <p>Study plans</p>
-                      <strong>—</strong>
+                      <strong>{studyPlans.length}</strong>
                     </div>
                   </article>
                 </section>
