@@ -343,3 +343,22 @@ test('passes the selected TA user ID to StudyPlanForm', async () => {
   expect(screen.queryByTestId('study-plan-form')).not.toBeInTheDocument()
   expect(screen.getByText('Only TAs can create study plans.')).toBeInTheDocument()
 })
+
+test('does not allow study plan creation when the users API returns no users', async () => {
+  const user = (await import('@testing-library/user-event')).default.setup()
+
+  vi.stubGlobal('fetch', vi.fn(async (url) => ({
+    ok: true,
+    json: async () => url === '/api/users' ? [] : { status: 'ok' }
+  })))
+
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+
+  await user.click(screen.getByRole('button', { name: 'Study Plans' }))
+
+  expect(
+    await screen.findByText('Only TAs can create study plans.')
+  ).toBeInTheDocument()
+
+  expect(screen.queryByTestId('study-plan-form')).not.toBeInTheDocument()
+})
