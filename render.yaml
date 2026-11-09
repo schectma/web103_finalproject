@@ -3,7 +3,7 @@ services:
     name: web103-finalproject
     runtime: node
     buildCommand: npm ci --include=dev --prefix client && npm run build --prefix client && npm ci --prefix server
-    startCommand: node server/server.js
+    startCommand: npm run check-db --prefix server && node server/server.js
     healthCheckPath: /api/health
     autoDeployTrigger: checksPass
     envVars:
