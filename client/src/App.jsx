@@ -750,6 +750,28 @@ function App() {
             ) : (
               <p>Only TAs can create study plans.</p>
             )}
+
+            <section className="content-card">
+              <h2>All study plans</h2>
+
+              {studyPlans.length > 0 ? (
+                <ul className="item-list">
+                  {studyPlans.map((plan) => (
+                    <li key={plan.id}>
+                      <div className="assignment-info">
+                        <span className="item-name">{plan.title}</span>
+                        <small>{courseName(plan.course_id)}</small>
+                      </div>
+                      <span className="item-tag">
+                        {formatDue(plan.created_at)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="empty-message">No study plans yet.</p>
+              )}
+            </section>
           </>
         )}
 

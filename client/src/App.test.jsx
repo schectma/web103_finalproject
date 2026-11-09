@@ -370,3 +370,32 @@ test('shows the study plan count on the dashboard', async () => {
     (await screen.findByText('Study plans')).nextElementSibling
   ).toHaveTextContent('2')
 })
+
+test('lists study plans on the Study Plans page', async () => {
+  vi.stubGlobal('fetch', vi.fn(async (url) => ({
+    ok: true,
+    json: async () => ({
+      '/api/health': { status: 'ok', db: 'connected' },
+      '/api/courses': [{ id: 1, course_name: 'Web Development', ta_id: 1 }],
+      '/api/courses/1/assignments': [],
+      '/api/study-plans': [
+        {
+          id: 1,
+          course_id: 1,
+          title: 'Midterm Prep',
+          content: 'Review chapters 1-5',
+          created_at: '2026-11-01T12:00:00.000Z'
+        }
+      ]
+    })[url] ?? []
+  })))
+
+  const user = (await import('@testing-library/user-event')).default.setup()
+
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+
+  await user.click(screen.getByRole('button', { name: /study plans/i }))
+
+  expect(await screen.findByText('Midterm Prep')).toBeInTheDocument()
+  expect(screen.getByText('Web Development')).toBeInTheDocument()
+})
