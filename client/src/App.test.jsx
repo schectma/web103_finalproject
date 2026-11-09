@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { vi, test, expect } from 'vitest'
 import App from './App.jsx'
+import { CurrentUserProvider } from './CurrentUserContext.jsx'
 
 vi.mock('./components/StudyPlanForm.jsx', () => ({
   default: () => <div>Mock Study Plan Form</div>
@@ -9,7 +10,7 @@ vi.mock('./components/StudyPlanForm.jsx', () => ({
 test('renders the Course Tracking navigation', () => {
   vi.stubGlobal('fetch', vi.fn(() => new Promise(() => {})))
 
-  render(<App />)
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
 
   expect(
     screen.getByRole('button', { name: 'Courses' })
@@ -26,7 +27,7 @@ test('opens the Courses page and displays its loading state', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<App />)
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
 
   await user.click(
     screen.getByRole('button', { name: 'Courses' })
@@ -82,7 +83,7 @@ test('displays courses and their assignment counts', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<App />)
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
@@ -139,7 +140,7 @@ test('displays an empty state when a course has no assignments', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<App />)
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
@@ -178,7 +179,7 @@ test('displays an empty state when no courses exist', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<App />)
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
@@ -218,7 +219,7 @@ test('displays an error when the courses API fails', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<App />)
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
@@ -253,7 +254,7 @@ test('rejects an invalid courses API response', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<App />)
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
@@ -298,7 +299,7 @@ test('displays an error when course assignments cannot load', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<App />)
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
