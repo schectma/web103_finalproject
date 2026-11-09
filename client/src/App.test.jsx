@@ -65,6 +65,8 @@ test('displays courses and their assignment counts', async () => {
       ? { status: 'ok', db: 'connected' }
       : url === '/api/courses'
         ? courses
+        : url === '/api/study-plans'
+          ? []
         : url === '/api/courses/1/assignments'
           ? assignments[1]
           : url === '/api/courses/2/assignments'
@@ -125,7 +127,8 @@ test('displays an empty state when a course has no assignments', async () => {
     '/api/courses': [
       { id: 1, course_name: 'Empty Course', ta_id: 1 }
     ],
-    '/api/courses/1/assignments': []
+    '/api/courses/1/assignments': [],
+    '/api/study-plans': []
   }[url]
 
   if (data === undefined) {
@@ -164,7 +167,8 @@ test('displays an empty state when no courses exist', async () => {
   vi.stubGlobal('fetch', vi.fn(async (url) => {
   const data = {
     '/api/health': { status: 'ok', db: 'connected' },
-    '/api/courses': []
+    '/api/courses': [],
+    '/api/study-plans': []
   }[url]
 
   if (data === undefined) {
@@ -286,6 +290,10 @@ test('displays an error when course assignments cannot load', async () => {
     }
   }
 
+  if (url === '/api/study-plans') {
+    return { ok: true, json: async () => [] }
+  }
+
   if (url === '/api/courses/1/assignments') {
     return {
       ok: false,
@@ -341,4 +349,24 @@ test('passes the selected TA ID to the Study Plan form', async () => {
   expect(
     await screen.findByTestId('study-plan-creator')
   ).toHaveTextContent('7')
+})
+
+test('shows the study plan count on the dashboard', async () => {
+  vi.stubGlobal('fetch', vi.fn(async (url) => ({
+    ok: true,
+    json: async () => ({
+      '/api/health': { status: 'ok', db: 'connected' },
+      '/api/courses': [],
+      '/api/study-plans': [
+        { id: 1, course_id: 1, title: 'Plan A', content: 'a' },
+        { id: 2, course_id: 1, title: 'Plan B', content: 'b' }
+      ]
+    })[url] ?? []
+  })))
+
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+
+  expect(
+    (await screen.findByText('Study plans')).nextElementSibling
+  ).toHaveTextContent('2')
 })

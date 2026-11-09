@@ -35,6 +35,7 @@ function App() {
   const [submitting, setSubmitting] = useState(false)
   const [courses, setCourses] = useState([])
   const [assignments, setAssignments] = useState([])
+  const [studyPlans, setStudyPlans] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [currentTime] = useState(() => Date.now())
@@ -92,6 +93,20 @@ function App() {
           throw new Error('Invalid courses response')
         }
 
+        const studyPlansResponse = await fetch('/api/study-plans', {
+          signal: controller.signal
+        })
+
+        if (!studyPlansResponse.ok) {
+          throw new Error('Could not load study plans')
+        }
+
+        const studyPlanData = await studyPlansResponse.json()
+
+        if (!Array.isArray(studyPlanData)) {
+          throw new Error('Invalid study plans response')
+        }
+
         const assignmentLists = await Promise.all(
           courseData.map(async (course) => {
             const response = await fetch(
@@ -126,6 +141,7 @@ function App() {
         if (!controller.signal.aborted) {
           setCourses(courseData)
           setAssignments(allAssignments)
+          setStudyPlans(studyPlanData)
         }
       } catch (err) {
         if (!controller.signal.aborted) {
@@ -361,7 +377,7 @@ function App() {
 
                     <div>
                       <p>Study plans</p>
-                      <strong>—</strong>
+                      <strong>{studyPlans.length}</strong>
                     </div>
                   </article>
                 </section>
