@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import express from 'express'
 import pool from './db.js'
 import { validateStudyPlan } from './studyPlanValidation.js'
-import { createStudyPlan } from './studyPlanQueries.js'
+import { createStudyPlan, listStudyPlans } from './studyPlanQueries.js'
 import { validateCourse } from './courseValidation.js'
 import assignmentRoutes from './routes/assignments.js'
 import userRoutes from './routes/users.js'
@@ -171,6 +171,19 @@ app.post('/api/courses', async (req, res) => {
 
 app.use('/api/assignments', assignmentRoutes)
 app.use('/api/users', userRoutes)
+// GET all study plans, newest first
+app.get('/api/study-plans', async (req, res) => {
+  try {
+    return res.status(200).json(await listStudyPlans())
+  } catch (error) {
+    console.error('Error fetching study plans:', error)
+
+    return res.status(500).json({
+      error: 'Failed to fetch study plans'
+    })
+  }
+})
+
 // Study Plan Creation: validate and save a study plan
 app.post('/api/study-plans', async (req, res) => {
   const result = validateStudyPlan(req.body)

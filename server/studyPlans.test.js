@@ -183,3 +183,52 @@ test('POST /api/study-plans handles unexpected database errors', async () => {
     queryMock.mock.restore()
   }
 })
+
+// Test 6: List study plans
+test('GET /api/study-plans returns all study plans', async () => {
+  const plans = [{ id: 1, ...validPlan }]
+  const queryMock = mock.method(pool, 'query', async () => ({ rows: plans }))
+  const server = app.listen(0)
+
+  try {
+    const response = await fetch(
+      `http://127.0.0.1:${server.address().port}/api/study-plans`
+    )
+
+    assert.equal(response.status, 200)
+    assert.deepEqual(await response.json(), plans)
+    assert.match(queryMock.mock.calls[0].arguments[0], /FROM study_plans/)
+  } finally {
+    await new Promise((resolve, reject) => {
+      server.close(err => err ? reject(err) : resolve())
+    })
+    queryMock.mock.restore()
+  }
+})
+
+// Test 7: Return HTTP 500 when listing fails
+test('GET /api/study-plans handles database errors', async () => {
+  const queryMock = mock.method(pool, 'query', async () => {
+    throw new Error('Database unavailable')
+  })
+  const consoleMock = mock.method(console, 'error', () => {})
+  const server = app.listen(0)
+
+  try {
+    const response = await fetch(
+      `http://127.0.0.1:${server.address().port}/api/study-plans`
+    )
+
+    assert.equal(response.status, 500)
+    assert.equal(
+      (await response.json()).error,
+      'Failed to fetch study plans'
+    )
+  } finally {
+    await new Promise((resolve, reject) => {
+      server.close(err => err ? reject(err) : resolve())
+    })
+    consoleMock.mock.restore()
+    queryMock.mock.restore()
+  }
+})
