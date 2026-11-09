@@ -730,7 +730,7 @@ function App() {
             </section>
 
             {role === 'ta' ? (
-              <StudyPlanForm />
+              <StudyPlanForm creatorId={currentUserId} />
             ) : (
               <p>Only TAs can create study plans.</p>
             )}
