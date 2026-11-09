@@ -4,7 +4,7 @@ import App from './App.jsx'
 import { CurrentUserProvider } from './CurrentUserContext.jsx'
 
 vi.mock('./components/StudyPlanForm.jsx', () => ({
-  default: () => <div>Mock Study Plan Form</div>
+  default: ({ creatorId }) => <div data-testid="study-plan-form">Creator ID: {String(creatorId)}</div>
 }))
 
 test('renders the Course Tracking navigation', () => {
@@ -311,4 +311,35 @@ test('displays an error when course assignments cannot load', async () => {
     screen.queryByText('Loading courses...')
   ).not.toBeInTheDocument()
 
+})
+
+test('passes the selected TA user ID to StudyPlanForm', async () => {
+  const user = (await import('@testing-library/user-event')).default.setup()
+
+  vi.stubGlobal('fetch', vi.fn(async (url) => ({
+    ok: true,
+    json: async () => url === '/api/users'
+      ? [
+          { id: 7, first_name: 'Taylor', last_name: 'Assistant', role: 'ta' },
+          { id: 8, first_name: 'Sam', last_name: 'Student', role: 'student' }
+        ]
+      : { status: 'ok' }
+  })))
+
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+
+  await user.click(screen.getByRole('button', { name: 'Study Plans' }))
+
+  await user.selectOptions(
+    await screen.findByRole('combobox', { name: 'Mock user' }),
+    '7'
+  )
+
+  expect(await screen.findByTestId('study-plan-form'))
+    .toHaveTextContent('Creator ID: 7')
+
+  await user.selectOptions(screen.getByRole('combobox', { name: 'Mock user' }), '8')
+
+  expect(screen.queryByTestId('study-plan-form')).not.toBeInTheDocument()
+  expect(screen.getByText('Only TAs can create study plans.')).toBeInTheDocument()
 })

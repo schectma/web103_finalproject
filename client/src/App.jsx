@@ -284,7 +284,7 @@ function App() {
         <select
           className="role-switcher"
           aria-label="Mock user"
-          value={currentUserId}
+          value={currentUserId ?? ""}
           onChange={(event) => setCurrentUserId(Number(event.target.value))}
         >
           {users.map((user) => (
@@ -731,7 +731,7 @@ function App() {
             </section>
 
             {role === 'ta' ? (
-              <StudyPlanForm />
+              <StudyPlanForm creatorId={currentUserId} />
             ) : (
               <p>Only TAs can create study plans.</p>
             )}
