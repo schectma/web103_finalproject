@@ -553,3 +553,63 @@ button.nav-link:focus-visible {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* Study Plans */
+.study-plans-list {
+  margin-top: 28px;
+}
+
+.study-plans-list > h2 {
+  margin: 0 0 20px;
+  font-size: 21px;
+}
+
+.study-plans-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.study-plan-card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid #ededf5;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 3px 12px rgba(40, 40, 80, 0.04);
+}
+
+.study-plan-card h3 {
+  margin: 0 0 16px;
+  color: #35315f;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.study-plan-card > p {
+  margin: 8px 0;
+  color: #777a9b;
+  font-size: 13px;
+}
+
+.study-plan-content {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f7f6ff;
+  color: #45445c;
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  .study-plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .study-plan-card {
+    padding: 20px;
+  }
+}

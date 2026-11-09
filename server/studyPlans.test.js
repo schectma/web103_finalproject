@@ -32,6 +32,28 @@ async function postStudyPlan(body) {
   }
 }
 
+
+// Helper function to send GET requests to the API
+async function getStudyPlans() {
+  const server = app.listen(0)
+
+  try {
+    const port = server.address().port
+    const response = await fetch(
+      `http://127.0.0.1:${port}/api/study-plans`
+    )
+
+    return {
+      status: response.status,
+      data: await response.json()
+    }
+  } finally {
+    await new Promise((resolve, reject) => {
+      server.close(err => err ? reject(err) : resolve())
+    })
+  }
+}
+
 // Example valid study plan
 const validPlan = {
   course_id: 1,
@@ -178,6 +200,80 @@ test('POST /api/study-plans handles unexpected database errors', async () => {
       'Failed to create study plan'
     )
     assert.equal(queryMock.mock.callCount(), 1)
+  } finally {
+    consoleMock.mock.restore()
+    queryMock.mock.restore()
+  }
+})
+
+// Test 6: GET all study plans with related details
+test('GET /api/study-plans returns all plans with course and creator details', async () => {
+  const plans = [
+    {
+      id: 22,
+      course_id: 10,
+      topic_id: 50,
+      created_by: 1,
+      title: 'Testing and Code Quality',
+      content: 'Complete testing exercises.',
+      course_name: 'Software Engineering & Testing',
+      topic_name: 'Code Reviews & Quality',
+      creator_name: 'Taylor Reyes'
+    }
+  ]
+
+  const queryMock = mock.method(pool, 'query', async () => ({
+    rows: plans
+  }))
+
+  try {
+    const response = await getStudyPlans()
+
+    assert.equal(response.status, 200)
+    assert.deepEqual(response.data, plans)
+    assert.equal(queryMock.mock.callCount(), 1)
+
+    const [sql] = queryMock.mock.calls[0].arguments
+    assert.match(sql, /FROM study_plans sp/)
+    assert.match(sql, /JOIN courses c/)
+    assert.match(sql, /JOIN users u/)
+    assert.match(sql, /LEFT JOIN topics t/)
+  } finally {
+    queryMock.mock.restore()
+  }
+})
+
+// Test 7: Return an empty array when no study plans exist
+test('GET /api/study-plans returns an empty array when no plans exist', async () => {
+  const queryMock = mock.method(pool, 'query', async () => ({
+    rows: []
+  }))
+
+  try {
+    const response = await getStudyPlans()
+
+    assert.equal(response.status, 200)
+    assert.deepEqual(response.data, [])
+  } finally {
+    queryMock.mock.restore()
+  }
+})
+
+// Test 8: Handle unexpected database errors
+test('GET /api/study-plans handles database errors', async () => {
+  const queryMock = mock.method(pool, 'query', async () => {
+    throw new Error('Database unavailable')
+  })
+
+  const consoleMock = mock.method(console, 'error', () => {})
+
+  try {
+    const response = await getStudyPlans()
+
+    assert.equal(response.status, 500)
+    assert.deepEqual(response.data, {
+      error: 'Failed to fetch study plans'
+    })
   } finally {
     consoleMock.mock.restore()
     queryMock.mock.restore()

@@ -69,7 +69,9 @@ test('displays courses and their assignment counts', async () => {
           ? assignments[1]
           : url === '/api/courses/2/assignments'
             ? assignments[2]
-            : null
+            : url === '/api/study-plans'
+              ? []
+              : null
 
   if (data === null) {
     throw new Error(`Unexpected API request: ${url}`)
@@ -125,7 +127,8 @@ test('displays an empty state when a course has no assignments', async () => {
     '/api/courses': [
       { id: 1, course_name: 'Empty Course', ta_id: 1 }
     ],
-    '/api/courses/1/assignments': []
+    '/api/courses/1/assignments': [],
+    '/api/study-plans': []
   }[url]
 
   if (data === undefined) {
@@ -164,7 +167,8 @@ test('displays an empty state when no courses exist', async () => {
   vi.stubGlobal('fetch', vi.fn(async (url) => {
   const data = {
     '/api/health': { status: 'ok', db: 'connected' },
-    '/api/courses': []
+    '/api/courses': [],
+    '/api/study-plans': []
   }[url]
 
   if (data === undefined) {

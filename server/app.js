@@ -171,6 +171,39 @@ app.post('/api/courses', async (req, res) => {
 
 app.use('/api/assignments', assignmentRoutes)
 app.use('/api/users', userRoutes)
+// GET all study plans with course, topic, and creator details
+app.get('/api/study-plans', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        sp.id,
+        sp.course_id,
+        sp.topic_id,
+        sp.created_by,
+        sp.title,
+        sp.content,
+        sp.created_at,
+        sp.updated_at,
+        c.course_name,
+        t.name AS topic_name,
+        u.first_name || ' ' || u.last_name AS creator_name
+      FROM study_plans sp
+      JOIN courses c ON c.id = sp.course_id
+      JOIN users u ON u.id = sp.created_by
+      LEFT JOIN topics t ON t.id = sp.topic_id
+      ORDER BY sp.created_at DESC, sp.id DESC
+    `)
+
+    return res.status(200).json(result.rows)
+  } catch (error) {
+    console.error('Error fetching study plans:', error)
+
+    return res.status(500).json({
+      error: 'Failed to fetch study plans'
+    })
+  }
+})
+
 // Study Plan Creation: validate and save a study plan
 app.post('/api/study-plans', async (req, res) => {
   const result = validateStudyPlan(req.body)
