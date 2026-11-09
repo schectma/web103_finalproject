@@ -35,6 +35,7 @@ function App() {
   const [submitting, setSubmitting] = useState(false)
   const [courses, setCourses] = useState([])
   const [assignments, setAssignments] = useState([])
+  const [studyPlans, setStudyPlans] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [currentTime] = useState(() => Date.now())
@@ -123,9 +124,24 @@ function App() {
               new Date(b.due_date).getTime()
           )
 
+        const studyPlansResponse = await fetch('/api/study-plans', {
+          signal: controller.signal
+        })
+
+        if (!studyPlansResponse.ok) {
+          throw new Error('Could not load study plans')
+        }
+
+        const studyPlansData = await studyPlansResponse.json()
+
+        if (!Array.isArray(studyPlansData)) {
+          throw new Error('Invalid study plans response')
+        }
+
         if (!controller.signal.aborted) {
           setCourses(courseData)
           setAssignments(allAssignments)
+          setStudyPlans(studyPlansData)
         }
       } catch (err) {
         if (!controller.signal.aborted) {
@@ -729,11 +745,35 @@ function App() {
               </div>
             </section>
 
-            {role === 'ta' ? (
+            {role === 'ta' && (
               <StudyPlanForm creatorId={currentUserId} />
-            ) : (
-              <p>Only TAs can create study plans.</p>
             )}
+
+            <section className="study-plans-list">
+              <h2>Available Study Plans ({studyPlans.length})</h2>
+
+              {loading ? (
+                <p>Loading study plans...</p>
+              ) : error ? (
+                <p role="alert">{error}</p>
+              ) : studyPlans.length === 0 ? (
+                <p>No study plans available yet.</p>
+              ) : (
+                <div className="study-plans-grid">
+                  {studyPlans.map((plan) => (
+                    <article className="study-plan-card" key={plan.id}>
+                      <h3>{plan.title}</h3>
+                      <p><strong>Course:</strong> {plan.course_name}</p>
+                      <p><strong>Topic:</strong> {plan.topic_name || 'General'}</p>
+                      <p><strong>Created by:</strong> {plan.creator_name}</p>
+                      <div className="study-plan-content">
+                        {plan.content}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              )}
+            </section>
           </>
         )}
 

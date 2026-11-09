@@ -1,0 +1,750 @@
+{
+  "courses": [
+    {
+      "course_name": "Web Development",
+      "ta_id": 1
+    },
+    {
+      "course_name": "Data Structures",
+      "ta_id": 2
+    },
+    {
+      "course_name": "Database Management",
+      "ta_id": 2
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "ta_id": 1
+    },
+    {
+      "course_name": "Backend API Development",
+      "ta_id": 2
+    },
+    {
+      "course_name": "Python Programming",
+      "ta_id": 1
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "ta_id": 2
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "ta_id": 1
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "ta_id": 2
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "ta_id": 1
+    }
+  ],
+  "topics": [
+    {
+      "course_name": "Web Development",
+      "name": "HTML & Semantic Accessibility"
+    },
+    {
+      "course_name": "Web Development",
+      "name": "CSS Layouts & Responsive Design"
+    },
+    {
+      "course_name": "Web Development",
+      "name": "JavaScript & DOM"
+    },
+    {
+      "course_name": "Web Development",
+      "name": "React"
+    },
+    {
+      "course_name": "Web Development",
+      "name": "Express"
+    },
+    {
+      "course_name": "Data Structures",
+      "name": "Arrays & Linked Lists"
+    },
+    {
+      "course_name": "Data Structures",
+      "name": "Stacks & Queues"
+    },
+    {
+      "course_name": "Data Structures",
+      "name": "Trees & Binary Search"
+    },
+    {
+      "course_name": "Data Structures",
+      "name": "Sorting"
+    },
+    {
+      "course_name": "Data Structures",
+      "name": "Graphs"
+    },
+    {
+      "course_name": "Database Management",
+      "name": "Relational Database Design"
+    },
+    {
+      "course_name": "Database Management",
+      "name": "SQL Queries & Joins"
+    },
+    {
+      "course_name": "Database Management",
+      "name": "Normalization"
+    },
+    {
+      "course_name": "Database Management",
+      "name": "Transactions & Indexes"
+    },
+    {
+      "course_name": "Database Management",
+      "name": "Database Security"
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "name": "Components & JSX"
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "name": "State & Props"
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "name": "Hooks & Effects"
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "name": "React Router"
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "name": "Frontend Testing"
+    },
+    {
+      "course_name": "Backend API Development",
+      "name": "REST API Design"
+    },
+    {
+      "course_name": "Backend API Development",
+      "name": "Express Middleware"
+    },
+    {
+      "course_name": "Backend API Development",
+      "name": "Authentication & Authorization"
+    },
+    {
+      "course_name": "Backend API Development",
+      "name": "API Validation & Error Handling"
+    },
+    {
+      "course_name": "Backend API Development",
+      "name": "API Integration Testing"
+    },
+    {
+      "course_name": "Python Programming",
+      "name": "Python Fundamentals"
+    },
+    {
+      "course_name": "Python Programming",
+      "name": "Functions & Modules"
+    },
+    {
+      "course_name": "Python Programming",
+      "name": "Object-Oriented Python"
+    },
+    {
+      "course_name": "Python Programming",
+      "name": "File Handling & Exceptions"
+    },
+    {
+      "course_name": "Python Programming",
+      "name": "Python Unit Testing"
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "name": "Data Cleaning"
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "name": "Pandas & NumPy"
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "name": "Exploratory Data Analysis"
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "name": "Statistical Analysis"
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "name": "Dashboard Design"
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "name": "Security Principles"
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "name": "Network Threats"
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "name": "Encryption & Hashing"
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "name": "Identity & Access Management"
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "name": "Incident Response"
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "name": "Cloud Service Models"
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "name": "Docker Containers"
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "name": "CI/CD Pipelines"
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "name": "Cloud Deployment"
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "name": "Monitoring & Logging"
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "name": "Agile & Scrum"
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "name": "Requirements Engineering"
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "name": "Software Architecture"
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "name": "Automated Testing"
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "name": "Code Reviews & Quality"
+    }
+  ],
+  "assignments": [
+    {
+      "course_name": "Web Development",
+      "topic_name": "HTML & Semantic Accessibility",
+      "created_by": 1,
+      "priority": 2,
+      "title": "Build an Accessible Portfolio",
+      "description": "Create a responsive personal portfolio using semantic HTML, accessible navigation, and descriptive image text.",
+      "due_date": "2026-11-20T23:59:00Z"
+    },
+    {
+      "course_name": "Web Development",
+      "topic_name": "CSS Layouts & Responsive Design",
+      "created_by": 1,
+      "priority": 2,
+      "title": "Responsive Campus Website",
+      "description": "Build a mobile-first campus information website using CSS Grid, Flexbox, and responsive breakpoints.",
+      "due_date": "2026-12-04T23:59:00Z"
+    },
+    {
+      "course_name": "Web Development",
+      "topic_name": "JavaScript & DOM",
+      "created_by": 1,
+      "priority": 1,
+      "title": "Interactive Task Tracker",
+      "description": "Implement a JavaScript task tracker with DOM updates, input validation, and local storage.",
+      "due_date": "2026-12-18T23:59:00Z"
+    },
+    {
+      "course_name": "Web Development",
+      "topic_name": "React",
+      "created_by": 1,
+      "priority": 1,
+      "title": "Full-Stack Student Portal",
+      "description": "Build a React interface connected to an Express API with loading, error, and success states.",
+      "due_date": "2027-01-15T23:59:00Z"
+    },
+    {
+      "course_name": "Data Structures",
+      "topic_name": "Arrays & Linked Lists",
+      "created_by": 2,
+      "priority": 2,
+      "title": "Linked List Implementation",
+      "description": "Implement singly and doubly linked lists with insertion, deletion, and traversal tests.",
+      "due_date": "2026-11-23T23:59:00Z"
+    },
+    {
+      "course_name": "Data Structures",
+      "topic_name": "Stacks & Queues",
+      "created_by": 2,
+      "priority": 2,
+      "title": "Queue-Based Service Simulator",
+      "description": "Simulate a campus help desk using queues and analyze processing order and runtime.",
+      "due_date": "2026-12-07T23:59:00Z"
+    },
+    {
+      "course_name": "Data Structures",
+      "topic_name": "Trees & Binary Search",
+      "created_by": 2,
+      "priority": 1,
+      "title": "Binary Search Tree Explorer",
+      "description": "Implement search, insertion, deletion, and traversal operations for a binary search tree.",
+      "due_date": "2026-12-21T23:59:00Z"
+    },
+    {
+      "course_name": "Data Structures",
+      "topic_name": "Graphs",
+      "created_by": 2,
+      "priority": 1,
+      "title": "Shortest Path Visualizer",
+      "description": "Implement breadth-first search and Dijkstra shortest paths with documented complexity.",
+      "due_date": "2027-01-18T23:59:00Z"
+    },
+    {
+      "course_name": "Database Management",
+      "topic_name": "Relational Database Design",
+      "created_by": 2,
+      "priority": 2,
+      "title": "Design a Library ER Diagram",
+      "description": "Design entities, relationships, keys, and cardinalities for a library lending system.",
+      "due_date": "2026-11-24T23:59:00Z"
+    },
+    {
+      "course_name": "Database Management",
+      "topic_name": "SQL Queries & Joins",
+      "created_by": 2,
+      "priority": 2,
+      "title": "Student Records SQL Queries",
+      "description": "Write joins, grouping queries, subqueries, and filtering reports for a student database.",
+      "due_date": "2026-12-08T23:59:00Z"
+    },
+    {
+      "course_name": "Database Management",
+      "topic_name": "Normalization",
+      "created_by": 2,
+      "priority": 1,
+      "title": "Normalize a Registration Schema",
+      "description": "Transform an unnormalized registration dataset into third normal form.",
+      "due_date": "2026-12-22T23:59:00Z"
+    },
+    {
+      "course_name": "Database Management",
+      "topic_name": "Transactions & Indexes",
+      "created_by": 2,
+      "priority": 1,
+      "title": "Transaction and Index Lab",
+      "description": "Compare indexed query plans and demonstrate atomic transactions with rollback.",
+      "due_date": "2027-01-19T23:59:00Z"
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "topic_name": "Components & JSX",
+      "created_by": 1,
+      "priority": 2,
+      "title": "Reusable Component Library",
+      "description": "Build accessible buttons, cards, forms, and navigation components with consistent props.",
+      "due_date": "2026-11-25T23:59:00Z"
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "topic_name": "State & Props",
+      "created_by": 1,
+      "priority": 2,
+      "title": "Stateful Habit Tracker",
+      "description": "Create a habit tracker with controlled inputs, state updates, and derived summaries.",
+      "due_date": "2026-12-09T23:59:00Z"
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "topic_name": "Hooks & Effects",
+      "created_by": 1,
+      "priority": 1,
+      "title": "Course Catalog with Hooks",
+      "description": "Fetch course data using hooks and handle loading, errors, and request cancellation.",
+      "due_date": "2026-12-23T23:59:00Z"
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "topic_name": "Frontend Testing",
+      "created_by": 1,
+      "priority": 1,
+      "title": "Frontend Testing Suite",
+      "description": "Write component and interaction tests covering accessibility and edge cases.",
+      "due_date": "2027-01-20T23:59:00Z"
+    },
+    {
+      "course_name": "Backend API Development",
+      "topic_name": "REST API Design",
+      "created_by": 2,
+      "priority": 2,
+      "title": "RESTful Course API",
+      "description": "Design CRUD endpoints for courses with appropriate HTTP methods and status codes.",
+      "due_date": "2026-11-27T23:59:00Z"
+    },
+    {
+      "course_name": "Backend API Development",
+      "topic_name": "Express Middleware",
+      "created_by": 2,
+      "priority": 2,
+      "title": "Middleware Logging Lab",
+      "description": "Implement request logging, centralized errors, and reusable Express middleware.",
+      "due_date": "2026-12-11T23:59:00Z"
+    },
+    {
+      "course_name": "Backend API Development",
+      "topic_name": "Authentication & Authorization",
+      "created_by": 2,
+      "priority": 1,
+      "title": "Role-Based Access Control",
+      "description": "Enforce student and TA permissions on protected endpoints using test identities.",
+      "due_date": "2026-12-28T23:59:00Z"
+    },
+    {
+      "course_name": "Backend API Development",
+      "topic_name": "API Integration Testing",
+      "created_by": 2,
+      "priority": 1,
+      "title": "API Validation Test Suite",
+      "description": "Test valid inputs, invalid payloads, missing resources, and database errors.",
+      "due_date": "2027-01-22T23:59:00Z"
+    },
+    {
+      "course_name": "Python Programming",
+      "topic_name": "Python Fundamentals",
+      "created_by": 1,
+      "priority": 2,
+      "title": "Student Grade Calculator",
+      "description": "Build a command-line grade calculator with loops, conditionals, and input validation.",
+      "due_date": "2026-11-30T23:59:00Z"
+    },
+    {
+      "course_name": "Python Programming",
+      "topic_name": "Functions & Modules",
+      "created_by": 1,
+      "priority": 2,
+      "title": "Reusable Python Utilities",
+      "description": "Organize functions into modules and document their inputs and outputs.",
+      "due_date": "2026-12-14T23:59:00Z"
+    },
+    {
+      "course_name": "Python Programming",
+      "topic_name": "Object-Oriented Python",
+      "created_by": 1,
+      "priority": 1,
+      "title": "Campus Inventory Classes",
+      "description": "Model inventory items using classes, inheritance, and encapsulation.",
+      "due_date": "2026-12-29T23:59:00Z"
+    },
+    {
+      "course_name": "Python Programming",
+      "topic_name": "Python Unit Testing",
+      "created_by": 1,
+      "priority": 1,
+      "title": "CSV Processing and Tests",
+      "description": "Read CSV files, validate records, handle exceptions, and write unit tests.",
+      "due_date": "2027-01-25T23:59:00Z"
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "topic_name": "Data Cleaning",
+      "created_by": 2,
+      "priority": 2,
+      "title": "Clean Student Survey Data",
+      "description": "Identify missing values, duplicates, inconsistent categories, and data-quality issues.",
+      "due_date": "2026-12-01T23:59:00Z"
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "topic_name": "Pandas & NumPy",
+      "created_by": 2,
+      "priority": 2,
+      "title": "Pandas Enrollment Analysis",
+      "description": "Use pandas to calculate enrollment trends, group summaries, and descriptive statistics.",
+      "due_date": "2026-12-15T23:59:00Z"
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "topic_name": "Exploratory Data Analysis",
+      "created_by": 2,
+      "priority": 1,
+      "title": "Explore Course Outcomes",
+      "description": "Analyze a fictional course-outcomes dataset and communicate patterns and limitations.",
+      "due_date": "2026-12-30T23:59:00Z"
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "topic_name": "Dashboard Design",
+      "created_by": 2,
+      "priority": 1,
+      "title": "Interactive Analytics Dashboard",
+      "description": "Design charts and filters that clearly communicate trends and avoid misleading scales.",
+      "due_date": "2027-01-26T23:59:00Z"
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "topic_name": "Security Principles",
+      "created_by": 1,
+      "priority": 2,
+      "title": "Threat Modeling Worksheet",
+      "description": "Identify assets, threats, trust boundaries, and mitigations for a campus portal.",
+      "due_date": "2026-12-02T23:59:00Z"
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "topic_name": "Network Threats",
+      "created_by": 1,
+      "priority": 2,
+      "title": "Network Security Assessment",
+      "description": "Review a fictional network diagram and recommend defensive configuration improvements.",
+      "due_date": "2026-12-16T23:59:00Z"
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "topic_name": "Encryption & Hashing",
+      "created_by": 1,
+      "priority": 1,
+      "title": "Encryption Concepts Report",
+      "description": "Compare symmetric encryption, public-key encryption, and cryptographic hashing.",
+      "due_date": "2027-01-04T23:59:00Z"
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "topic_name": "Incident Response",
+      "created_by": 1,
+      "priority": 1,
+      "title": "Incident Response Tabletop",
+      "description": "Develop a response timeline, containment plan, and communication checklist for a simulated incident.",
+      "due_date": "2027-01-27T23:59:00Z"
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "topic_name": "Cloud Service Models",
+      "created_by": 2,
+      "priority": 2,
+      "title": "Cloud Architecture Comparison",
+      "description": "Compare IaaS, PaaS, and SaaS using a fictional college application scenario.",
+      "due_date": "2026-12-03T23:59:00Z"
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "topic_name": "Docker Containers",
+      "created_by": 2,
+      "priority": 2,
+      "title": "Dockerize a Node Application",
+      "description": "Create a Dockerfile, configure environment variables, and document local container startup.",
+      "due_date": "2026-12-17T23:59:00Z"
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "topic_name": "CI/CD Pipelines",
+      "created_by": 2,
+      "priority": 1,
+      "title": "Build a CI Pipeline",
+      "description": "Automate linting, tests, and build verification on pull requests.",
+      "due_date": "2027-01-05T23:59:00Z"
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "topic_name": "Monitoring & Logging",
+      "created_by": 2,
+      "priority": 1,
+      "title": "Deployment and Monitoring Plan",
+      "description": "Document deployment configuration, health checks, logging, and rollback procedures.",
+      "due_date": "2027-01-28T23:59:00Z"
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "topic_name": "Agile & Scrum",
+      "created_by": 1,
+      "priority": 2,
+      "title": "Sprint Planning Simulation",
+      "description": "Create a sprint goal, prioritized backlog, and acceptance criteria for a team project.",
+      "due_date": "2026-12-04T23:59:00Z"
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "topic_name": "Requirements Engineering",
+      "created_by": 1,
+      "priority": 2,
+      "title": "Requirements Specification",
+      "description": "Write functional requirements, user stories, and measurable acceptance criteria.",
+      "due_date": "2026-12-18T23:59:00Z"
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "topic_name": "Software Architecture",
+      "created_by": 1,
+      "priority": 1,
+      "title": "Architecture Decision Record",
+      "description": "Compare two architectural options and document the decision and tradeoffs.",
+      "due_date": "2027-01-06T23:59:00Z"
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "topic_name": "Automated Testing",
+      "created_by": 1,
+      "priority": 1,
+      "title": "Automated Regression Suite",
+      "description": "Develop repeatable unit and integration tests and report uncovered risks.",
+      "due_date": "2027-01-29T23:59:00Z"
+    }
+  ],
+  "study_plans": [
+    {
+      "course_name": "Web Development",
+      "topic_name": "HTML & Semantic Accessibility",
+      "created_by": 1,
+      "title": "Accessible Web Foundations",
+      "content": "Learning goal: Review semantic HTML, responsive layouts, and browser accessibility tools. Build a mobile-friendly page, test keyboard navigation, and document accessibility improvements.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Web Development",
+      "topic_name": "Express",
+      "created_by": 1,
+      "title": "Full-Stack Project Preparation",
+      "content": "Learning goal: Review React components, Express routes, and JSON APIs. Build a small end-to-end feature, test loading and error states, and prepare a deployment checklist.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Data Structures",
+      "topic_name": "Arrays & Linked Lists",
+      "created_by": 2,
+      "title": "Core Data Structures Review",
+      "content": "Learning goal: Practice arrays, linked lists, stacks, and queues. Implement each structure, compare operation complexity, and solve five practice problems.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Data Structures",
+      "topic_name": "Graphs",
+      "created_by": 2,
+      "title": "Trees and Graph Algorithms",
+      "content": "Learning goal: Review tree traversal, binary search trees, BFS, DFS, and shortest paths. Implement sample algorithms and explain time and space complexity.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Database Management",
+      "topic_name": "Relational Database Design",
+      "created_by": 2,
+      "title": "SQL and Relational Design",
+      "content": "Learning goal: Design an ER diagram, define primary and foreign keys, and practice joins, grouping, and subqueries using fictional student data.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Database Management",
+      "topic_name": "Database Security",
+      "created_by": 2,
+      "title": "Database Performance and Reliability",
+      "content": "Learning goal: Review normalization, transactions, isolation, and indexing. Compare query plans and demonstrate rollback using a disposable local dataset.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "topic_name": "Components & JSX",
+      "created_by": 1,
+      "title": "React Component Fundamentals",
+      "content": "Learning goal: Build reusable components with props, controlled forms, and state. Practice component composition and accessibility checks.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "React & Frontend Development",
+      "topic_name": "Frontend Testing",
+      "created_by": 1,
+      "title": "Hooks and Frontend Testing",
+      "content": "Learning goal: Implement data fetching with effects and cleanup. Add loading and error states, then write interaction tests for key user flows.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Backend API Development",
+      "topic_name": "REST API Design",
+      "created_by": 2,
+      "title": "REST API Design Sprint",
+      "content": "Learning goal: Define resources, routes, request bodies, and response codes. Implement CRUD endpoints and document the API contract.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Backend API Development",
+      "topic_name": "API Integration Testing",
+      "created_by": 2,
+      "title": "Secure and Reliable APIs",
+      "content": "Learning goal: Review validation, authentication concepts, authorization, and centralized error handling. Write tests for invalid requests and access restrictions.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Python Programming",
+      "topic_name": "Python Fundamentals",
+      "created_by": 1,
+      "title": "Python Programming Essentials",
+      "content": "Learning goal: Practice variables, loops, collections, functions, and modules. Build small command-line exercises and review common errors.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Python Programming",
+      "topic_name": "Python Unit Testing",
+      "created_by": 1,
+      "title": "Python Project Quality",
+      "content": "Learning goal: Model a simple application using classes. Process CSV data, handle exceptions, and create unit tests for normal and edge cases.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "topic_name": "Data Cleaning",
+      "created_by": 2,
+      "title": "Data Preparation and Exploration",
+      "content": "Learning goal: Clean a fictional dataset, document missing values, calculate summary statistics, and explore relationships with pandas.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Data Analytics & Visualization",
+      "topic_name": "Dashboard Design",
+      "created_by": 2,
+      "title": "Communicating Insights",
+      "content": "Learning goal: Create charts with appropriate scales and labels. Build a small dashboard and summarize findings, assumptions, and limitations.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "topic_name": "Security Principles",
+      "created_by": 1,
+      "title": "Security Foundations",
+      "content": "Learning goal: Review confidentiality, integrity, availability, least privilege, and common network threats. Create a threat model for a fictional campus system.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Cybersecurity Fundamentals",
+      "topic_name": "Incident Response",
+      "created_by": 1,
+      "title": "Defensive Security Practice",
+      "content": "Learning goal: Compare encryption and hashing, review identity controls, and complete a simulated incident-response tabletop exercise.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "topic_name": "Cloud Service Models",
+      "created_by": 2,
+      "title": "Containers and Cloud Basics",
+      "content": "Learning goal: Compare cloud service models, containerize a small Node application, and document configuration and environment variables.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Cloud Computing & DevOps",
+      "topic_name": "Monitoring & Logging",
+      "created_by": 2,
+      "title": "CI/CD and Deployment Readiness",
+      "content": "Learning goal: Create a test-and-build pipeline, review deployment steps, and document health checks, logging, and rollback procedures.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "topic_name": "Agile & Scrum",
+      "created_by": 1,
+      "title": "Agile Team Planning",
+      "content": "Learning goal: Write user stories and acceptance criteria, prioritize a backlog, and plan a realistic sprint with clearly assigned responsibilities.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    },
+    {
+      "course_name": "Software Engineering & Testing",
+      "topic_name": "Code Reviews & Quality",
+      "created_by": 1,
+      "title": "Testing and Code Quality",
+      "content": "Learning goal: Review software architecture decisions, implement unit and integration tests, and conduct a structured code review.\n\nFour-week schedule:\nWeek 1 — Review foundational concepts and complete guided exercises.\nWeek 2 — Apply the concepts in a small hands-on implementation.\nWeek 3 — Test, refine, and document the completed work.\nWeek 4 — Review outcomes, identify gaps, and prepare for assessment.\n\nCompletion criteria: Submit working examples, document key decisions, and demonstrate understanding through a short reflection."
+    }
+  ]
+}
