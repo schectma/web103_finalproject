@@ -24,9 +24,17 @@ While many productivity tools already exist, our goal is to focus specifically o
 
 ## Tech Stack
 
-Frontend:
+**Frontend:** React 19, Vite 8, JavaScript, HTML, CSS
 
-Backend:
+**Backend:** Node.js, Express 5
+
+**Database:** PostgreSQL (`pg`)
+
+**Testing:** Vitest, React Testing Library, Node.js built-in test runner
+
+**Linting:** Oxlint
+
+**Deployment:** Render
 
 ## Features
 
@@ -48,7 +56,6 @@ Fields for marking and notating assignments and plans.
 
 [gif goes here]
 
-### [ADDITIONAL FEATURES GO HERE - ADD ALL FEATURES HERE IN THE FORMAT ABOVE; you will check these off and add gifs as you complete them]
 
 ### Study Plan Creation
 
@@ -62,7 +69,7 @@ Additional field specifically for categorizing and associating courses, assignme
 
 [gif goes here]
 
-### Traige System
+### Triage System
 
 Rankings for prioritization of assignments.
 
@@ -82,4 +89,87 @@ Selective limitation of visible assignments, courses, and plans in a given view.
 
 ## Installation Instructions
 
-[instructions go here]
+### Prerequisites
+
+- Node.js and npm
+- PostgreSQL
+- Git
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/schectma/web103_finalproject.git
+cd web103_finalproject
+```
+
+### 2. Install backend dependencies
+
+```bash
+cd server
+npm install
+```
+
+### 3. Configure PostgreSQL
+
+Create a local PostgreSQL database named `studysync_test`.
+
+Create `server/.env`:
+
+```env
+DATABASE_URL=postgresql://YOUR_USER:YOUR_PASSWORD@localhost:5432/studysync_test
+PORT=3000
+```
+
+Replace the example credentials with your local PostgreSQL credentials.
+
+### 4. Initialize the database
+
+From the `server` directory, run:
+
+```bash
+ALLOW_DB_RESET=true npm run reset
+```
+
+**Warning:** This reset command drops existing tables. Only use it with a disposable local test database. Never run it against the shared Render database.
+
+### 5. Start the backend
+
+```bash
+npm start
+```
+
+The backend runs on port 3000 by default.
+
+### 6. Start the frontend
+
+Open a second terminal:
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+Open the local URL displayed by Vite.
+
+### 7. Run tests
+
+Frontend:
+
+```bash
+cd client
+npm test
+```
+
+Backend:
+
+```bash
+cd server
+npm test
+```
+
+Database-writing tests must use a disposable test database.
+
+### Authentication
+
+StudySync currently uses a simulated development user rather than a complete authentication system. The optional `VITE_CURRENT_USER_ID` environment variable selects a development user.
