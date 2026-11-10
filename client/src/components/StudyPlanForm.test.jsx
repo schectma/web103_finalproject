@@ -58,7 +58,8 @@ describe('StudyPlanForm', () => {
 
     vi.stubGlobal('fetch', fetchMock)
 
-    render(<StudyPlanForm creatorId={7} />)
+    const onCreated = vi.fn()
+    render(<StudyPlanForm creatorId={7} onCreated={onCreated} />)
 
     await screen.findByRole('option', {
       name: 'Web Development'
@@ -88,6 +89,7 @@ describe('StudyPlanForm', () => {
     ).toBeInTheDocument()
 
     expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(onCreated).toHaveBeenCalledTimes(1)
 
     expect(fetchMock).toHaveBeenNthCalledWith(
       2,
@@ -169,7 +171,8 @@ describe('StudyPlanForm', () => {
 
     vi.stubGlobal('fetch', fetchMock)
 
-    render(<StudyPlanForm creatorId={7} />)
+    const onCreated = vi.fn()
+    render(<StudyPlanForm creatorId={7} onCreated={onCreated} />)
 
     await screen.findByRole('option', {
       name: 'Web Development'
@@ -201,6 +204,7 @@ describe('StudyPlanForm', () => {
     ).not.toBeInTheDocument()
 
     expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(onCreated).not.toHaveBeenCalled()
   })
 
 

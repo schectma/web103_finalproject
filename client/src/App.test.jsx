@@ -4,7 +4,14 @@ import App from './App.jsx'
 import { CurrentUserProvider } from './CurrentUserContext.jsx'
 
 vi.mock('./components/StudyPlanForm.jsx', () => ({
-  default: ({ creatorId }) => <div data-testid="study-plan-creator">{creatorId ?? "no creator"}</div>
+  default: ({ creatorId, onCreated }) => (
+    <div data-testid="study-plan-creator">
+      {creatorId ?? "no creator"}
+      <button type="button" onClick={onCreated}>
+        Simulate Successful Study Plan Save
+      </button>
+    </div>
+  )
 }))
 
 test('renders the Course Tracking navigation', () => {
@@ -345,4 +352,85 @@ test('passes the selected TA ID to the Study Plan form', async () => {
   expect(
     await screen.findByTestId('study-plan-creator')
   ).toHaveTextContent('7')
+})
+
+test('refreshes the study plan list after a successful save', async () => {
+  let studyPlanRequests = 0
+
+  const fetchMock = vi.fn(async (url) => {
+    if (url === '/api/users') {
+      return {
+        ok: true,
+        json: async () => [
+          { id: 7, first_name: 'Test', last_name: 'TA', role: 'ta' }
+        ]
+      }
+    }
+
+    if (url === '/api/health') {
+      return {
+        ok: true,
+        json: async () => ({ status: 'ok', db: 'connected' })
+      }
+    }
+
+    if (url === '/api/study-plans') {
+      studyPlanRequests += 1
+
+      return {
+        ok: true,
+        json: async () => studyPlanRequests === 1
+          ? []
+          : [{
+              id: 42,
+              course_id: 1,
+              course_name: 'Web Development',
+              topic_name: null,
+              creator_name: 'Test TA',
+              title: 'New Study Plan',
+              content: 'Review React and Express'
+            }]
+      }
+    }
+
+    if (url === '/api/courses') {
+      return {
+        ok: true,
+        json: async () => [
+          { id: 1, course_name: 'Web Development', ta_id: 7 }
+        ]
+      }
+    }
+
+    if (url === '/api/courses/1/assignments') {
+      return { ok: true, json: async () => [] }
+    }
+
+    throw new Error(`Unexpected API request: ${url}`)
+  })
+
+  vi.stubGlobal('fetch', fetchMock)
+
+  const user = (await import('@testing-library/user-event')).default.setup()
+
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+
+  await user.click(screen.getByRole('button', { name: 'Study Plans' }))
+
+  expect(
+    await screen.findByRole('heading', { name: 'Available Study Plans (0)' })
+  ).toBeInTheDocument()
+
+  await user.click(
+    screen.getByRole('button', {
+      name: 'Simulate Successful Study Plan Save'
+    })
+  )
+
+  expect(
+    await screen.findByRole('heading', { name: 'Available Study Plans (1)' })
+  ).toBeInTheDocument()
+
+  expect(screen.getByText('New Study Plan')).toBeInTheDocument()
+  expect(studyPlanRequests).toBe(2)
 })
