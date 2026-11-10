@@ -6,7 +6,8 @@
     "start": "node server.js",
     "test": "node --test",
     "reset": "node config/reset.js",
-    "check-db": "node config/checkDb.js"
+    "check-db": "node config/checkDb.js",
+    "migrate": "node config/migrate.js"
   },
   "dependencies": {
     "dotenv": "^18.0.9",
