@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-export default function StudyPlanForm({ creatorId = null }) {
+export default function StudyPlanForm({ creatorId = null, onCreated }) {
   const [courses, setCourses] = useState([])
   const [loadingCourses, setLoadingCourses] = useState(true)
   const [courseError, setCourseError] = useState('')
@@ -145,6 +145,7 @@ export default function StudyPlanForm({ creatorId = null }) {
 
       setErrors([])
       setSuccess('Study plan saved successfully!')
+      onCreated?.()
       setForm({
         course_id: '',
         topic_id: '',

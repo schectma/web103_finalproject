@@ -162,6 +162,26 @@ function App() {
     return () => controller.abort()
   }, [])
 
+  const refreshStudyPlans = async () => {
+    try {
+      const response = await fetch('/api/study-plans')
+
+      if (!response.ok) {
+        throw new Error('Could not refresh study plans')
+      }
+
+      const data = await response.json()
+
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid study plans response')
+      }
+
+      setStudyPlans(data)
+    } catch (error) {
+      console.error('Failed to refresh study plans:', error)
+    }
+  }
+
   const courseName = (id) =>
     courses.find((course) => course.id === id)?.course_name ??
     'Unknown course'
@@ -746,7 +766,7 @@ function App() {
             </section>
 
             {role === 'ta' && (
-              <StudyPlanForm creatorId={currentUserId} />
+              <StudyPlanForm creatorId={currentUserId} onCreated={refreshStudyPlans} />
             )}
 
             <section className="study-plans-list">
