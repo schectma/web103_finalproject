@@ -397,7 +397,7 @@ function App() {
 
                     <div>
                       <p>Study plans</p>
-                      <strong>—</strong>
+                      <strong>{studyPlans.length}</strong>
                     </div>
                   </article>
                 </section>
