@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { vi, test, expect } from 'vitest'
 import App from './App.jsx'
 import { CurrentUserProvider } from './CurrentUserContext.jsx'
@@ -433,4 +433,45 @@ test('refreshes the study plan list after a successful save', async () => {
 
   expect(screen.getByText('New Study Plan')).toBeInTheDocument()
   expect(studyPlanRequests).toBe(2)
+})
+
+test('shows the study plan count on the dashboard', async () => {
+  const fetchMock = vi.fn(async (url) => {
+    if (url === '/api/users') {
+      return { ok: true, json: async () => [] }
+    }
+
+    if (url === '/api/health') {
+      return {
+        ok: true,
+        json: async () => ({ status: 'ok', db: 'connected' })
+      }
+    }
+
+    if (url === '/api/study-plans') {
+      return {
+        ok: true,
+        json: async () => [
+          { id: 1, course_id: 1, title: 'Plan One' },
+          { id: 2, course_id: 1, title: 'Plan Two' }
+        ]
+      }
+    }
+
+    if (url === '/api/courses') {
+      return { ok: true, json: async () => [] }
+    }
+
+    throw new Error(`Unexpected API request: ${url}`)
+  })
+
+  vi.stubGlobal('fetch', fetchMock)
+
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+
+  const label = await screen.findByText('Study plans')
+
+  await waitFor(() => {
+    expect(label.nextElementSibling).toHaveTextContent('2')
+  })
 })
