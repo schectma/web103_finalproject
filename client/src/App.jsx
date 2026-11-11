@@ -637,15 +637,19 @@ function App() {
                       </option>
                     ))}
                   </select>
-                  {assignmentCourseFilter !== 'all' && (
-                    <button
-                      type="button"
-                      className="reset-filter-button"
-                      onClick={() => setAssignmentCourseFilter('all')}
-                    >
-                      Clear filter
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    className="reset-filter-button"
+                    onClick={() => setAssignmentCourseFilter('all')}
+                    disabled={assignmentCourseFilter === 'all'}
+                    style={{
+                      visibility: assignmentCourseFilter === 'all'
+                        ? 'hidden'
+                        : 'visible'
+                    }}
+                  >
+                    Clear filter
+                  </button>
                 </div>
 
                 <p role="status" aria-live="polite">
