@@ -44,11 +44,11 @@ Addition of assignment objects replete with task, topic, grade, and deliverable 
 
 https://imgur.com/a/w9juX9G
 
-### Course Tracking
+### Course Tracking ✅
 
 Addition and linking of courses to assignments.
 
-[gif goes here]
+https://imgur.com/a/ugwYsTc
 
 ### Comments
 
@@ -57,11 +57,11 @@ Fields for marking and notating assignments and plans.
 [gif goes here]
 
 
-### Study Plan Creation
+### Study Plan Creation ✅
 
 Addition of written, formatted study plans linked to specific courses and assignments.
 
-[gif goes here]
+https://imgur.com/a/iCzOoug
 
 ### Topic Tagging
 
@@ -81,11 +81,11 @@ Indicate submission or critical lapsing of assignment by clearing it from visibl
 
 [gif goes here]
 
-### Filtering
+### Filtering ✅
 
 Selective limitation of visible assignments, courses, and plans in a given view.
 
-[gif goes here]
+https://imgur.com/a/T8luvBV
 
 ## Installation Instructions
 
