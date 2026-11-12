@@ -9,7 +9,7 @@ export async function getStudyPlanComments(studyPlanId) {
        c.created_by,
        c.content,
        c.created_at,
-       u.first_name || ' ' || u.last_name AS creator_name
+       u.first_name || ' ' || u.last_name AS author_name
      FROM comments c
      JOIN users u ON u.id = c.created_by
      WHERE c.study_plan_id = $1
@@ -43,7 +43,7 @@ export async function createStudyPlanComment({
      )
      SELECT
        inserted.*,
-       u.first_name || ' ' || u.last_name AS creator_name
+       u.first_name || ' ' || u.last_name AS author_name
      FROM inserted
      JOIN users u ON u.id = inserted.created_by`,
     [studyPlanId, created_by, content.trim()]

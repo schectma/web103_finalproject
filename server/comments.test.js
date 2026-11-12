@@ -44,7 +44,7 @@ const savedComment = {
   created_by: 1,
   content: validComment.content,
   created_at: '2026-11-11T12:00:00.000Z',
-  creator_name: 'Morgan Lee'
+  author_name: 'Morgan Lee'
 }
 
 test('GET comments returns comments oldest first', async () => {
