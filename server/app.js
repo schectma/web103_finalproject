@@ -3,6 +3,11 @@ import { fileURLToPath } from 'node:url'
 import express from 'express'
 import pool from './db.js'
 import { validateStudyPlan } from './studyPlanValidation.js'
+import { validateComment } from './commentValidation.js'
+import {
+  getStudyPlanComments,
+  createStudyPlanComment
+} from './commentQueries.js'
 import { createStudyPlan } from './studyPlanQueries.js'
 import { validateCourse } from './courseValidation.js'
 import assignmentRoutes from './routes/assignments.js'
@@ -247,6 +252,75 @@ app.post('/api/study-plans', async (req, res) => {
     return res.status(500).json({
       error: 'Failed to create study plan'
     })
+  }
+})
+
+// GET comments for a specific study plan
+app.get('/api/study-plans/:studyPlanId/comments', async (req, res) => {
+  const studyPlanId = Number(req.params.studyPlanId)
+
+  if (!Number.isSafeInteger(studyPlanId) || studyPlanId <= 0) {
+    return res.status(400).json({ error: 'Invalid study plan ID' })
+  }
+
+  try {
+    const studyPlan = await pool.query(
+      'SELECT id FROM study_plans WHERE id = $1',
+      [studyPlanId]
+    )
+
+    if (studyPlan.rows.length === 0) {
+      return res.status(404).json({ error: 'Study plan not found' })
+    }
+
+    const comments = await getStudyPlanComments(studyPlanId)
+    return res.status(200).json(comments)
+  } catch (error) {
+    console.error('Error fetching comments:', error)
+    return res.status(500).json({ error: 'Failed to fetch comments' })
+  }
+})
+
+// POST a new comment on a study plan
+app.post('/api/study-plans/:studyPlanId/comments', async (req, res) => {
+  const studyPlanId = Number(req.params.studyPlanId)
+
+  if (!Number.isSafeInteger(studyPlanId) || studyPlanId <= 0) {
+    return res.status(400).json({ error: 'Invalid study plan ID' })
+  }
+
+  const validation = validateComment(req.body)
+
+  if (!validation.valid) {
+    return res.status(400).json({ errors: validation.errors })
+  }
+
+  try {
+    const studyPlan = await pool.query(
+      'SELECT id FROM study_plans WHERE id = $1',
+      [studyPlanId]
+    )
+
+    if (studyPlan.rows.length === 0) {
+      return res.status(404).json({ error: 'Study plan not found' })
+    }
+
+    const comment = await createStudyPlanComment({
+      studyPlanId,
+      created_by: req.body.created_by,
+      content: req.body.content
+    })
+
+    return res.status(201).json(comment)
+  } catch (error) {
+    if (error.code === '23503') {
+      return res.status(400).json({
+        error: 'Referenced study plan or user does not exist'
+      })
+    }
+
+    console.error('Error creating comment:', error)
+    return res.status(500).json({ error: 'Failed to create comment' })
   }
 })
 
