@@ -475,3 +475,108 @@ test('shows the study plan count on the dashboard', async () => {
     expect(label.nextElementSibling).toHaveTextContent('2')
   })
 })
+
+test('filters assignments by course and restores all assignments', async () => {
+  const courses = [
+    { id: 1, course_name: 'Web Development', ta_id: 1 },
+    { id: 2, course_name: 'Database Systems', ta_id: 1 }
+  ]
+
+  const assignments = {
+    1: [
+      { id: 101, course_id: 1, title: 'React Project', due_date: '2026-12-01' },
+      { id: 102, course_id: 1, title: 'API Project', due_date: '2026-12-05' }
+    ],
+    2: [
+      { id: 103, course_id: 2, title: 'SQL Project', due_date: '2026-12-10' }
+    ]
+  }
+
+  vi.stubGlobal('fetch', vi.fn(async (url) => {
+    const data = {
+      '/api/health': { status: 'ok', db: 'connected' },
+      '/api/users': [],
+      '/api/courses': courses,
+      '/api/courses/1/assignments': assignments[1],
+      '/api/courses/2/assignments': assignments[2],
+      '/api/study-plans': []
+    }[url]
+
+    if (data === undefined) {
+      throw new Error(`Unexpected API request: ${url}`)
+    }
+
+    return { ok: true, json: async () => data }
+  }))
+
+  const user = (await import('@testing-library/user-event')).default.setup()
+
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+
+  await user.click(screen.getByRole('button', { name: 'Assignments' }))
+
+  expect(await screen.findByText('Showing 3 assignments')).toBeInTheDocument()
+  expect(screen.getByText('React Project')).toBeInTheDocument()
+  expect(screen.getByText('SQL Project')).toBeInTheDocument()
+
+  const filter = screen.getByLabelText('Filter by course')
+  const clearButton = screen.getByText('Clear filter').closest('button')
+
+  expect(filter).toHaveValue('all')
+  expect(clearButton).toBeDisabled()
+
+  await user.selectOptions(filter, '1')
+
+  expect(filter).toHaveValue('1')
+  expect(screen.getByText('Showing 2 assignments')).toBeInTheDocument()
+  expect(screen.getByText('React Project')).toBeInTheDocument()
+  expect(screen.getByText('API Project')).toBeInTheDocument()
+  expect(screen.queryByText('SQL Project')).not.toBeInTheDocument()
+  expect(clearButton).toBeEnabled()
+
+  await user.click(clearButton)
+
+  expect(filter).toHaveValue('all')
+  expect(screen.getByText('Showing 3 assignments')).toBeInTheDocument()
+  expect(screen.getByText('SQL Project')).toBeInTheDocument()
+  expect(clearButton).toBeDisabled()
+})
+
+test('shows an empty state when the selected course has no assignments', async () => {
+  vi.stubGlobal('fetch', vi.fn(async (url) => {
+    const data = {
+      '/api/health': { status: 'ok', db: 'connected' },
+      '/api/users': [],
+      '/api/courses': [
+        { id: 1, course_name: 'Web Development', ta_id: 1 },
+        { id: 2, course_name: 'Empty Course', ta_id: 1 }
+      ],
+      '/api/courses/1/assignments': [
+        { id: 101, course_id: 1, title: 'React Project', due_date: '2026-12-01' }
+      ],
+      '/api/courses/2/assignments': [],
+      '/api/study-plans': []
+    }[url]
+
+    if (data === undefined) {
+      throw new Error(`Unexpected API request: ${url}`)
+    }
+
+    return { ok: true, json: async () => data }
+  }))
+
+  const user = (await import('@testing-library/user-event')).default.setup()
+
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+
+  await user.click(screen.getByRole('button', { name: 'Assignments' }))
+
+  expect(await screen.findByText('Showing 1 assignment')).toBeInTheDocument()
+
+  await user.selectOptions(screen.getByLabelText('Filter by course'), '2')
+
+  expect(screen.getByText('Showing 0 assignments')).toBeInTheDocument()
+  expect(screen.getByText('No assignments found for this course.'))
+    .toBeInTheDocument()
+  expect(screen.queryByText('React Project')).not.toBeInTheDocument()
+})
