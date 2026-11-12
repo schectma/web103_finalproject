@@ -475,3 +475,98 @@ test('shows the study plan count on the dashboard', async () => {
     expect(label.nextElementSibling).toHaveTextContent('2')
   })
 })
+
+test('creates an assignment using the selected TA ID', async () => {
+  const fetchMock = vi.fn(async (url, options) => {
+    if (url === '/api/users') {
+      return {
+        ok: true,
+        json: async () => [
+          { id: 7, first_name: 'Test', last_name: 'TA', role: 'ta' }
+        ]
+      }
+    }
+
+    if (url === '/api/health') {
+      return {
+        ok: true,
+        json: async () => ({ status: 'ok', db: 'connected' })
+      }
+    }
+
+    if (url === '/api/courses') {
+      return {
+        ok: true,
+        json: async () => [
+          { id: 1, course_name: 'Web Development', ta_id: 7 }
+        ]
+      }
+    }
+
+    if (url === '/api/courses/1/assignments' ||
+        url === '/api/study-plans') {
+      return { ok: true, json: async () => [] }
+    }
+
+    if (url === '/api/assignments' && options?.method === 'POST') {
+      return {
+        ok: true,
+        json: async () => ({
+          id: 101,
+          ...JSON.parse(options.body)
+        })
+      }
+    }
+
+    throw new Error(`Unexpected API request: ${url}`)
+  })
+
+  vi.stubGlobal('fetch', fetchMock)
+
+  const user = (await import('@testing-library/user-event')).default.setup()
+
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+
+  await user.click(screen.getByRole('button', { name: 'Assignments' }))
+
+  expect(
+    await screen.findByRole('heading', { name: 'Create assignment' })
+  ).toBeInTheDocument()
+
+  await user.selectOptions(
+    screen.getByLabelText('Course', { selector: 'select[name="course_id"]' }),
+    '1'
+  )
+
+  await user.type(
+    screen.getByRole('textbox', { name: 'Title' }),
+    'React Practice'
+  )
+
+  await user.type(
+    screen.getByLabelText('Due date'),
+    '2026-12-15T12:00'
+  )
+
+  await user.click(
+    screen.getByRole('button', { name: 'Create assignment' })
+  )
+
+  await waitFor(() => {
+    const postCall = fetchMock.mock.calls.find(
+      ([url, options]) =>
+        url === '/api/assignments' && options?.method === 'POST'
+    )
+
+    expect(postCall).toBeDefined()
+
+    const body = JSON.parse(postCall[1].body)
+
+    expect(body).toMatchObject({
+      course_id: 1,
+      created_by: 7,
+      title: 'React Practice',
+      due_date: '2026-12-15T12:00'
+    })
+  })
+})
