@@ -279,4 +279,69 @@ describe('StudyPlanComments', () => {
     expect(screen.getByText('Comment for plan 20')).toBeInTheDocument()
   })
 
+
+  it('resets the form when switching plans during an unfinished POST', async () => {
+    let resolveOldPost
+
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => []
+      })
+      .mockImplementationOnce(
+        () => new Promise((resolve) => {
+          resolveOldPost = resolve
+        })
+      )
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => []
+      })
+
+    vi.stubGlobal('fetch', fetchMock)
+
+    const { rerender } = renderComments(10)
+
+    await screen.findByText(/no comments yet/i)
+
+    fireEvent.change(screen.getByLabelText('Add a comment'), {
+      target: { value: 'Old plan draft' }
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Post comment' }))
+
+    expect(screen.getByRole('button', { name: 'Posting...' }))
+      .toBeDisabled()
+
+    rerender(
+      <CurrentUserContext.Provider value={{ id: 2 }}>
+        <StudyPlanComments studyPlanId={20} />
+      </CurrentUserContext.Provider>
+    )
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Post comment' }))
+        .toBeEnabled()
+    })
+
+    expect(screen.getByLabelText('Add a comment')).toHaveValue('')
+
+    resolveOldPost({
+      ok: true,
+      json: async () => ({
+        id: 99,
+        created_by: 2,
+        content: 'Old plan draft',
+        created_at: '2026-11-12T12:00:00Z'
+      })
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText('Old plan draft'))
+        .not.toBeInTheDocument()
+    })
+
+    expect(fetchMock).toHaveBeenCalledTimes(3)
+  })
+
 })

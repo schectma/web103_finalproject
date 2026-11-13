@@ -19,6 +19,9 @@ export default function StudyPlanComments({ studyPlanId }) {
       setLoading(true)
       setError('')
       setComments([])
+      setSubmitting(false)
+      setSubmitError('')
+      setContent('')
 
       try {
         const response = await fetch(
@@ -148,7 +151,7 @@ export default function StudyPlanComments({ studyPlanId }) {
 
         <button
           type="submit"
-          disabled={submitting || !currentUserId}
+          disabled={submitting || loading || !currentUserId}
         >
           {submitting ? 'Posting...' : 'Post comment'}
         </button>
