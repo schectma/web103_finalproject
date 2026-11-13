@@ -1,0 +1,29 @@
+.comment-form {
+  display: grid;
+  gap: 8px;
+}
+
+.comment-form label {
+  color: #35315f;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d8d6ec;
+  border-radius: 10px;
+  font: inherit;
+  resize: vertical;
+}
+
+.comment-form button {
+  justify-self: start;
+}
+
+.comment-form-error {
+  margin: 0;
+  color: #b45330;
+  font-size: 13px;
+}
