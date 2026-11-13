@@ -31,6 +31,7 @@ const assertSafeTarget = () => {
 // Children first so foreign keys never block a drop
 const dropAllTables = async () => {
   await pool.query(`
+    DROP TABLE IF EXISTS comments;
     DROP TABLE IF EXISTS study_plans;
     DROP TABLE IF EXISTS assignments;
     DROP TABLE IF EXISTS topics;
