@@ -322,3 +322,58 @@ test('GET /api/courses handles unexpected database errors', async () => {
     queryMock.mock.restore()
   }
 })
+
+// Verify that assignments are requested in a deterministic order.
+test('GET course assignments orders by due date and assignment ID', async () => {
+  const queryMock = mock.method(pool, 'query', async (sql) => {
+    if (sql.includes('FROM courses')) {
+      return { rows: [{ id: 1 }] }
+    }
+
+    if (sql.includes('FROM assignments')) {
+      return { rows: [sampleAssignment] }
+    }
+
+    throw new Error('Unexpected SQL query')
+  })
+
+  try {
+    const response = await requestCourse('/api/courses/1/assignments')
+
+    assert.equal(response.status, 200)
+    assert.equal(queryMock.mock.callCount(), 2)
+
+    const [sql, values] = queryMock.mock.calls[1].arguments
+
+    assert.match(sql, /ORDER BY\s+due_date\s+ASC,\s*id\s+ASC/i)
+    assert.deepEqual(values, [1])
+  } finally {
+    queryMock.mock.restore()
+  }
+})
+
+// Verify that assignment query failures return a controlled HTTP 500.
+test('GET course assignments handles database failures', async () => {
+  const queryMock = mock.method(pool, 'query', async (sql) => {
+    if (sql.includes('FROM courses')) {
+      return { rows: [{ id: 1 }] }
+    }
+
+    throw new Error('Simulated assignment query failure')
+  })
+
+  const consoleMock = mock.method(console, 'error', () => {})
+
+  try {
+    const response = await requestCourse('/api/courses/1/assignments')
+
+    assert.equal(response.status, 500)
+    assert.deepEqual(response.data, {
+      error: 'Failed to fetch course assignments'
+    })
+    assert.equal(queryMock.mock.callCount(), 2)
+  } finally {
+    consoleMock.mock.restore()
+    queryMock.mock.restore()
+  }
+})
