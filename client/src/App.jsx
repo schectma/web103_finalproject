@@ -205,7 +205,7 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           course_id: course ? course.id : null,
-          created_by: CURRENT_USER_ID,
+          created_by: currentUserId,
           priority: form.priority === '' ? null : Number(form.priority),
           title: form.title,
           description: form.description === '' ? null : form.description,
