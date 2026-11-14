@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import StudyPlanForm from './components/StudyPlanForm.jsx'
+import PriorityBadge from './components/PriorityBadge.jsx'
 import { useCurrentUser } from './useCurrentUser.js'
 
 const emptyForm = {
@@ -480,6 +481,7 @@ function App() {
                               </small>
                             </div>
 
+                            <PriorityBadge priority={assignment.priority} />
                             <span className="item-tag due-tag">
                               {formatDue(
                                 assignment.due_date
@@ -572,6 +574,7 @@ function App() {
                             <div className="assignment-info">
                               <span className="item-name">{assignment.title}</span>
                             </div>
+                            <PriorityBadge priority={assignment.priority} />
                             <span className="item-tag due-tag">
                               {formatDue(assignment.due_date)}
                             </span>
@@ -669,6 +672,7 @@ function App() {
                           </span>
                           <small>{courseName(assignment.course_id)}</small>
                         </div>
+                        <PriorityBadge priority={assignment.priority} />
                         <span className="item-tag due-tag">
                           {formatDue(assignment.due_date)}
                         </span>
