@@ -378,7 +378,7 @@ test('GET course assignments supports priority sorting', async () => {
 
     assert.match(
       sql,
-      /ORDER BY\s+priority\s+ASC\s+NULLS\s+LAST,\s*due_date\s+ASC,\s*id\s+ASC/i
+      /ORDER BY\s+priority\s+DESC\s+NULLS\s+LAST,\s*due_date\s+ASC,\s*id\s+ASC/i
     )
     assert.deepEqual(values, [1])
   } finally {

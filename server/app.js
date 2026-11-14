@@ -78,7 +78,7 @@ app.get('/api/courses/:id/assignments', async (req, res) => {
 
     const sortByPriority = req.query.sort === 'priority'
     const orderBy = sortByPriority
-      ? 'priority ASC NULLS LAST, due_date ASC, id ASC'
+      ? 'priority DESC NULLS LAST, due_date ASC, id ASC'
       : 'due_date ASC, id ASC'
 
     const assignmentResult = await pool.query(
