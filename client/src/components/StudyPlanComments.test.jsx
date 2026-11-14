@@ -141,7 +141,7 @@ describe('StudyPlanComments', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Post comment' }))
 
     expect(screen.getByRole('alert')).toHaveTextContent(
-      'Please enter a comment'
+      'Comment cannot be blank.'
     )
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
