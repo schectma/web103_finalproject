@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import StudyPlanForm from './components/StudyPlanForm.jsx'
-import StudyPlanComments from './components/StudyPlanComments.jsx'
 import PriorityBadge from './components/PriorityBadge.jsx'
 import { useCurrentUser } from './useCurrentUser.js'
 
@@ -798,7 +797,6 @@ function App() {
                       <div className="study-plan-content">
                         {plan.content}
                       </div>
-                      <StudyPlanComments studyPlanId={plan.id} />
                     </article>
                   ))}
                 </div>
