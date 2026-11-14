@@ -74,6 +74,7 @@ test('GET comments returns comments oldest first', async () => {
     assert.equal(queryMock.mock.callCount(), 2)
 
     const [sql, values] = queryMock.mock.calls[1].arguments
+    assert.match(sql, /WHERE c\.study_plan_id = \$1/)
     assert.match(sql, /ORDER BY c\.created_at ASC, c\.id ASC/)
     assert.deepEqual(values, [10])
   } finally {
@@ -206,6 +207,39 @@ for (const method of ['GET', 'POST']) {
 
       assert.equal(response.status, 500)
       assert.equal(queryMock.mock.callCount(), 1)
+    } finally {
+      consoleMock.mock.restore()
+      queryMock.mock.restore()
+    }
+  })
+}
+
+for (const method of ['GET', 'POST']) {
+  test(`${method} comments handles failures after study plan lookup`, async () => {
+    const queryMock = mock.method(pool, 'query', async (sql) => {
+      if (sql.includes('SELECT id FROM study_plans')) {
+        return { rows: [{ id: 10 }] }
+      }
+
+      throw new Error('Comments query failed')
+    })
+    const consoleMock = mock.method(console, 'error', () => {})
+
+    try {
+      const response = await requestComments(
+        method,
+        10,
+        method === 'POST' ? validComment : undefined
+      )
+
+      assert.equal(response.status, 500)
+      assert.equal(
+        response.data.error,
+        method === 'GET'
+          ? 'Failed to fetch comments'
+          : 'Failed to create comment'
+      )
+      assert.equal(queryMock.mock.callCount(), 2)
     } finally {
       consoleMock.mock.restore()
       queryMock.mock.restore()

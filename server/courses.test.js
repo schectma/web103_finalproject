@@ -352,6 +352,69 @@ test('GET course assignments orders by due date and assignment ID', async () => 
   }
 })
 
+
+test('GET course assignments supports priority sorting', async () => {
+  const queryMock = mock.method(pool, 'query', async (sql) => {
+    if (sql.includes('FROM courses')) {
+      return { rows: [{ id: 1 }] }
+    }
+
+    if (sql.includes('FROM assignments')) {
+      return { rows: [sampleAssignment] }
+    }
+
+    throw new Error('Unexpected SQL query')
+  })
+
+  try {
+    const response = await requestCourse(
+      '/api/courses/1/assignments?sort=priority'
+    )
+
+    assert.equal(response.status, 200)
+    assert.deepEqual(response.data, [sampleAssignment])
+
+    const [sql, values] = queryMock.mock.calls[1].arguments
+
+    assert.match(
+      sql,
+      /ORDER BY\s+priority\s+DESC\s+NULLS\s+LAST,\s*due_date\s+ASC,\s*id\s+ASC/i
+    )
+    assert.deepEqual(values, [1])
+  } finally {
+    queryMock.mock.restore()
+  }
+})
+
+test('GET course assignments supports explicit due-date sorting', async () => {
+  const queryMock = mock.method(pool, 'query', async (sql) => {
+    if (sql.includes('FROM courses')) {
+      return { rows: [{ id: 1 }] }
+    }
+
+    if (sql.includes('FROM assignments')) {
+      return { rows: [sampleAssignment] }
+    }
+
+    throw new Error('Unexpected SQL query')
+  })
+
+  try {
+    const response = await requestCourse(
+      '/api/courses/1/assignments?sort=due_date'
+    )
+
+    assert.equal(response.status, 200)
+
+    const [sql, values] = queryMock.mock.calls[1].arguments
+
+    assert.match(sql, /ORDER BY\s+due_date\s+ASC,\s*id\s+ASC/i)
+    assert.deepEqual(values, [1])
+  } finally {
+    queryMock.mock.restore()
+  }
+})
+
 // Verify that assignment query failures return a controlled HTTP 500.
 test('GET course assignments handles database failures', async () => {
   const queryMock = mock.method(pool, 'query', async (sql) => {
