@@ -76,6 +76,11 @@ app.get('/api/courses/:id/assignments', async (req, res) => {
       })
     }
 
+    const sortByPriority = req.query.sort === 'priority'
+    const orderBy = sortByPriority
+      ? 'priority ASC NULLS LAST, due_date ASC, id ASC'
+      : 'due_date ASC, id ASC'
+
     const assignmentResult = await pool.query(
       `SELECT
         id,
@@ -90,7 +95,7 @@ app.get('/api/courses/:id/assignments', async (req, res) => {
         updated_at
        FROM assignments
        WHERE course_id = $1
-       ORDER BY due_date ASC, id ASC`,
+       ORDER BY ${orderBy}`,
       [courseId]
     )
 
