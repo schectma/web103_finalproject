@@ -1,0 +1,33 @@
+.comment-item {
+  padding: 14px 16px;
+  border: 1px solid #ededf5;
+  border-radius: 12px;
+  background: white;
+}
+
+.comment-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-bottom: 6px;
+}
+
+.comment-author {
+  color: #35315f;
+  font-size: 14px;
+}
+
+.comment-time {
+  color: #777a9b;
+  font-size: 12px;
+}
+
+.comment-content {
+  margin: 0;
+  color: #45445c;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
