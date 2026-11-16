@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Route, Routes, useLocation, useNavigate } from 'react-router'
+import { Route, Routes, useLocation, useNavigate } from 'react-router'
+import AssignmentsPage from './pages/AssignmentsPage.jsx'
 import StudyPlansPage from './pages/StudyPlansPage.jsx'
 import CoursesPage from './pages/CoursesPage.jsx'
 import AssignmentDetailPage from './pages/AssignmentDetailPage.jsx'
@@ -537,174 +538,28 @@ function App() {
               />
             }
           />
+          <Route
+            path="/assignments"
+            element={
+              <AssignmentsPage
+                courses={courses}
+                loading={loading}
+                error={error}
+                role={role}
+                form={form}
+                formErrors={formErrors}
+                success={success}
+                submitting={submitting}
+                updateField={updateField}
+                submitAssignment={submitAssignment}
+                courseName={courseName}
+                assignmentCourseFilter={assignmentCourseFilter}
+                setAssignmentCourseFilter={setAssignmentCourseFilter}
+                filteredPageAssignments={filteredPageAssignments}
+              />
+            }
+          />
         </Routes>
-
-        {pathname === '/assignments' && (
-          <>
-            <section className="welcome-section">
-              <div>
-                <h1>Assignments</h1>
-                <p>Create assignments and see what is due.</p>
-              </div>
-            </section>
-
-            {loading ? (
-              <p role="status">
-                Loading assignments...
-              </p>
-            ) : error ? (
-              <p
-                className="empty-message"
-                role="alert"
-              >
-                {error}
-              </p>
-            ) : (
-              <>
-              <section className="content-card">
-                <h2>All assignments</h2>
-
-                <div className="course-filter">
-                  <label htmlFor="assignment-course-filter">
-                    Filter by course
-                  </label>
-                  <select
-                    id="assignment-course-filter"
-                    value={assignmentCourseFilter}
-                    onChange={(event) =>
-                      setAssignmentCourseFilter(event.target.value)
-                    }
-                  >
-                    <option value="all">All Courses</option>
-                    {courses.map((course) => (
-                      <option key={course.id} value={String(course.id)}>
-                        {course.course_name}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    type="button"
-                    className="reset-filter-button"
-                    onClick={() => setAssignmentCourseFilter('all')}
-                    disabled={assignmentCourseFilter === 'all'}
-                    style={{
-                      visibility: assignmentCourseFilter === 'all'
-                        ? 'hidden'
-                        : 'visible'
-                    }}
-                  >
-                    Clear filter
-                  </button>
-                </div>
-
-                <p role="status" aria-live="polite">
-                  Showing {filteredPageAssignments.length}{' '}
-                  {filteredPageAssignments.length === 1
-                    ? 'assignment'
-                    : 'assignments'}
-                </p>
-
-                {filteredPageAssignments.length > 0 ? (
-                  <ul className="item-list">
-                    {filteredPageAssignments.map((assignment) => (
-                      <li key={assignment.id}>
-                        <div className="assignment-info">
-                          <Link
-                            className="item-name"
-                            to={`/assignments/${assignment.id}`}
-                          >
-                            {assignment.title}
-                          </Link>
-                          <small>{courseName(assignment.course_id)}</small>
-                        </div>
-                        <PriorityBadge priority={assignment.priority} />
-                        <span className="item-tag due-tag">
-                          {formatDue(assignment.due_date)}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="empty-message">
-                    {assignmentCourseFilter === 'all'
-                      ? 'No assignments available.'
-                      : 'No assignments found for this course.'}
-                  </p>
-                )}
-              </section>
-
-              {role === 'ta' && (
-              <section className="content-card form-card">
-                <h2>Create assignment</h2>
-                <form className="assignment-form" onSubmit={submitAssignment}>
-                  <label>
-                    Course
-                    <select name="course_id" value={form.course_id} onChange={updateField} required>
-                      <option value="">Select a course</option>
-                      {courses.map((course) => (
-                        <option key={course.id} value={course.id}>
-                          {course.course_name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label>
-                    Title
-                    <input name="title" value={form.title} onChange={updateField} required />
-                  </label>
-
-                  <label>
-                    Due date
-                    <input
-                      type="datetime-local"
-                      name="due_date"
-                      value={form.due_date}
-                      onChange={updateField}
-                      required
-                    />
-                  </label>
-
-                  <label>
-                    Priority
-                    <input
-                      type="number"
-                      min="1"
-                      name="priority"
-                      value={form.priority}
-                      onChange={updateField}
-                    />
-                  </label>
-
-                  <label className="wide">
-                    Description
-                    <textarea
-                      name="description"
-                      rows="3"
-                      value={form.description}
-                      onChange={updateField}
-                    />
-                  </label>
-
-                  {formErrors.length > 0 && (
-                    <ul className="form-errors wide" role="alert">
-                      {formErrors.map((message) => (
-                        <li key={message}>{message}</li>
-                      ))}
-                    </ul>
-                  )}
-                  {success && <p className="form-success wide" role="status">{success}</p>}
-
-                  <button type="submit" className="wide" disabled={submitting}>
-                    {submitting ? 'Creating...' : 'Create assignment'}
-                  </button>
-                </form>
-              </section>
-              )}
-              </>
-            )}
-          </>
-        )}
 
         <p className="api-status" role="status">
           API status: {health}
