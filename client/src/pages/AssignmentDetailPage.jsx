@@ -16,6 +16,8 @@ function AssignmentDetailPage({ courses, assignments, loading }) {
   const [submissionsError, setSubmissionsError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [formErrors, setFormErrors] = useState([])
+  const [editing, setEditing] = useState(false)
+  const [editErrors, setEditErrors] = useState([])
 
   const assignment = assignments.find(
     (item) => String(item.id) === assignmentId
@@ -60,6 +62,43 @@ function AssignmentDetailPage({ courses, assignments, loading }) {
       return true
     } catch {
       setFormErrors(['Could not reach the server'])
+      return false
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const updateSubmission = async ({ status, notes }) => {
+    setSubmitting(true)
+    setEditErrors([])
+
+    try {
+      const response = await fetch(
+        `/api/assignments/${assignmentId}/submissions/${currentUserId}`,
+        {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status, notes: notes.trim() || null })
+        }
+      )
+      const data = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        setEditErrors(
+          data.errors ?? [data.error ?? 'Could not update submission']
+        )
+        return false
+      }
+
+      setSubmissions((current) =>
+        current.map((item) =>
+          item.user_id === currentUserId ? { ...item, ...data } : item
+        )
+      )
+      setEditing(false)
+      return true
+    } catch {
+      setEditErrors(['Could not reach the server'])
       return false
     } finally {
       setSubmitting(false)
@@ -142,15 +181,44 @@ function AssignmentDetailPage({ courses, assignments, loading }) {
           <p className="empty-message">No submissions yet.</p>
         ) : (
           <ul className="item-list">
-            {submissions.map((submission) => (
-              <li key={submission.user_id}>
-                <div className="assignment-info">
-                  <span className="item-name">{submission.student_name}</span>
-                  {submission.notes && <small>{submission.notes}</small>}
-                </div>
-                <span className="item-tag">{statusLabel(submission.status)}</span>
-              </li>
-            ))}
+            {submissions.map((submission) => {
+              const isMine = submission.user_id === currentUserId
+
+              if (isMine && editing) {
+                return (
+                  <li key={submission.user_id}>
+                    <SubmissionForm
+                      title="Edit your submission"
+                      submitLabel="Save"
+                      initialStatus={submission.status}
+                      initialNotes={submission.notes ?? ''}
+                      onSubmit={updateSubmission}
+                      onCancel={() => {
+                        setEditing(false)
+                        setEditErrors([])
+                      }}
+                      submitting={submitting}
+                      errors={editErrors}
+                    />
+                  </li>
+                )
+              }
+
+              return (
+                <li key={submission.user_id}>
+                  <div className="assignment-info">
+                    <span className="item-name">{submission.student_name}</span>
+                    {submission.notes && <small>{submission.notes}</small>}
+                  </div>
+                  <span className="item-tag">{statusLabel(submission.status)}</span>
+                  {isMine && (
+                    <button type="button" onClick={() => setEditing(true)}>
+                      Edit
+                    </button>
+                  )}
+                </li>
+              )
+            })}
           </ul>
         )}
 
