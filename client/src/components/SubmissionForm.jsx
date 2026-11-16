@@ -1,14 +1,24 @@
 import { useState } from 'react'
 
-function SubmissionForm({ onSubmit, submitting, errors }) {
-  const [status, setStatus] = useState('in_progress')
-  const [notes, setNotes] = useState('')
+// Used for both creating (defaults) and editing (initial values + onCancel)
+function SubmissionForm({
+  onSubmit,
+  submitting,
+  errors,
+  initialStatus = 'in_progress',
+  initialNotes = '',
+  title = 'Submit your work',
+  submitLabel = 'Submit',
+  onCancel
+}) {
+  const [status, setStatus] = useState(initialStatus)
+  const [notes, setNotes] = useState(initialNotes)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     const saved = await onSubmit({ status, notes })
 
-    if (saved) {
+    if (saved && !onCancel) {
       setStatus('in_progress')
       setNotes('')
     }
@@ -16,7 +26,7 @@ function SubmissionForm({ onSubmit, submitting, errors }) {
 
   return (
     <form className="assignment-form" onSubmit={handleSubmit}>
-      <h3>Submit your work</h3>
+      <h3>{title}</h3>
 
       <label>
         Status
@@ -49,8 +59,14 @@ function SubmissionForm({ onSubmit, submitting, errors }) {
       )}
 
       <button type="submit" disabled={submitting}>
-        {submitting ? 'Submitting...' : 'Submit'}
+        {submitting ? 'Saving...' : submitLabel}
       </button>
+
+      {onCancel && (
+        <button type="button" onClick={onCancel} disabled={submitting}>
+          Cancel
+        </button>
+      )}
     </form>
   )
 }
