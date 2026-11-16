@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
+import PrioritySortControl from '../components/PrioritySortControl.jsx'
 import PriorityBadge from '../components/PriorityBadge.jsx'
 import { formatDue } from '../formatDue.js'
 
@@ -18,6 +20,38 @@ function AssignmentsPage({
   setAssignmentCourseFilter,
   filteredPageAssignments
 }) {
+  const [assignmentSort, setAssignmentSort] = useState('due_date')
+
+  const sortedPageAssignments = [...filteredPageAssignments].sort((a, b) => {
+    if (assignmentSort === 'priority') {
+      const normalizePriority = (value) =>
+        value == null || value === ''
+          ? 0
+          : [1, 2, 3].includes(Number(value))
+            ? Number(value)
+            : 0
+
+      const priorityA = normalizePriority(a.priority)
+      const priorityB = normalizePriority(b.priority)
+
+      if (priorityA !== priorityB) {
+        return priorityB - priorityA
+      }
+    }
+
+    const dueA = a.due_date ? new Date(a.due_date).getTime() : Infinity
+    const dueB = b.due_date ? new Date(b.due_date).getTime() : Infinity
+
+    const validDueA = Number.isNaN(dueA) ? Infinity : dueA
+    const validDueB = Number.isNaN(dueB) ? Infinity : dueB
+
+    if (validDueA !== validDueB) {
+      return validDueA - validDueB
+    }
+
+    return Number(a.id) - Number(b.id)
+  })
+
   return (
       <>
         <section className="welcome-section">
@@ -76,6 +110,15 @@ function AssignmentsPage({
               </button>
             </div>
 
+            <PrioritySortControl
+              options={[
+                { value: 'due_date', label: 'Due date (earliest first)' },
+                { value: 'priority', label: 'Priority (high to low)' }
+              ]}
+              value={assignmentSort}
+              onChange={setAssignmentSort}
+            />
+
             <p role="status" aria-live="polite">
               Showing {filteredPageAssignments.length}{' '}
               {filteredPageAssignments.length === 1
@@ -85,7 +128,7 @@ function AssignmentsPage({
 
             {filteredPageAssignments.length > 0 ? (
               <ul className="item-list">
-                {filteredPageAssignments.map((assignment) => (
+                {sortedPageAssignments.map((assignment) => (
                   <li key={assignment.id}>
                     <div className="assignment-info">
                       <Link
