@@ -18,6 +18,8 @@ function AssignmentDetailPage({ courses, assignments, loading }) {
   const [formErrors, setFormErrors] = useState([])
   const [editing, setEditing] = useState(false)
   const [editErrors, setEditErrors] = useState([])
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState('')
 
   const assignment = assignments.find(
     (item) => String(item.id) === assignmentId
@@ -102,6 +104,34 @@ function AssignmentDetailPage({ courses, assignments, loading }) {
       return false
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const deleteSubmission = async () => {
+    if (!window.confirm('Delete your submission?')) return
+
+    setDeleting(true)
+    setDeleteError('')
+
+    try {
+      const response = await fetch(
+        `/api/assignments/${assignmentId}/submissions/${currentUserId}`,
+        { method: 'DELETE' }
+      )
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}))
+        setDeleteError(data.error ?? 'Could not delete submission')
+        return
+      }
+
+      setSubmissions((current) =>
+        current.filter((item) => item.user_id !== currentUserId)
+      )
+    } catch {
+      setDeleteError('Could not reach the server')
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -212,14 +242,31 @@ function AssignmentDetailPage({ courses, assignments, loading }) {
                   </div>
                   <span className="item-tag">{statusLabel(submission.status)}</span>
                   {isMine && (
-                    <button type="button" onClick={() => setEditing(true)}>
-                      Edit
-                    </button>
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setEditing(true)}
+                        disabled={deleting}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={deleteSubmission}
+                        disabled={deleting}
+                      >
+                        {deleting ? 'Deleting...' : 'Delete'}
+                      </button>
+                    </>
                   )}
                 </li>
               )
             })}
           </ul>
+        )}
+
+        {deleteError && (
+          <p className="empty-message" role="alert">{deleteError}</p>
         )}
 
         {role === 'student' && !hasSubmitted && (
