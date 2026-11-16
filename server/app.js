@@ -12,6 +12,8 @@ import { createStudyPlan } from './studyPlanQueries.js'
 import { validateCourse } from './courseValidation.js'
 import assignmentRoutes from './routes/assignments.js'
 import userRoutes from './routes/users.js'
+import { createResetRouter } from './routes/reset.js'
+import { resetDatabase } from './config/reset.js'
 
 // Builds the app without starting it.
 // server.js starts listening on a port.
@@ -181,6 +183,7 @@ app.post('/api/courses', async (req, res) => {
 
 app.use('/api/assignments', assignmentRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/reset', createResetRouter(resetDatabase))
 // GET all study plans with course, topic, and creator details
 app.get('/api/study-plans', async (req, res) => {
   try {
