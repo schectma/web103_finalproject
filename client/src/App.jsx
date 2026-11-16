@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Route, Routes, useLocation, useNavigate } from 'react-router'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router'
 import DashboardPage from './pages/DashboardPage.jsx'
 import AssignmentsPage from './pages/AssignmentsPage.jsx'
 import StudyPlansPage from './pages/StudyPlansPage.jsx'
@@ -401,6 +401,7 @@ function App() {
               />
             }
           />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
         <p className="api-status" role="status">
