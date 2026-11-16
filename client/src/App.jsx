@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useLocation, useMatch, useNavigate } from 'react-router'
 import StudyPlanForm from './components/StudyPlanForm.jsx'
 import StudyPlanComments from './components/StudyPlanComments.jsx'
 import PriorityBadge from './components/PriorityBadge.jsx'
@@ -28,7 +29,17 @@ const formatDue = (due) => {
 
 function App() {
   const [health, setHealth] = useState('checking...')
-  const [page, setPage] = useState('dashboard')
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const courseMatch = useMatch('/courses/:courseId')
+  const routeCourseId = courseMatch ? Number(courseMatch.params.courseId) : null
+  const page = pathname.startsWith('/courses')
+    ? 'courses'
+    : pathname.startsWith('/assignments')
+      ? 'assignments'
+      : pathname.startsWith('/study-plans')
+        ? 'study-plans'
+        : 'dashboard'
   const { id: currentUserId, role, users, setCurrentUserId } = useCurrentUser()
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [form, setForm] = useState(emptyForm)
@@ -272,7 +283,7 @@ function App() {
             aria-current={
               page === 'dashboard' ? 'page' : undefined
             }
-            onClick={() => setPage('dashboard')}
+            onClick={() => navigate('/')}
           >
             Dashboard
           </button>
@@ -281,7 +292,7 @@ function App() {
             type="button"
             className={page === 'courses' ? 'nav-link active' : 'nav-link'}
             aria-current={page === 'courses' ? 'page' : undefined}
-            onClick={() => setPage('courses')}
+            onClick={() => navigate('/courses')}
           >
             Courses
           </button>
@@ -296,7 +307,7 @@ function App() {
             aria-current={
               page === 'assignments' ? 'page' : undefined
             }
-            onClick={() => setPage('assignments')}
+            onClick={() => navigate('/assignments')}
           >
             Assignments
           </button>
@@ -311,7 +322,7 @@ function App() {
             aria-current={
               page === 'study-plans' ? 'page' : undefined
             }
-            onClick={() => setPage('study-plans')}
+            onClick={() => navigate('/study-plans')}
           >
             Study Plans
           </button>
@@ -536,8 +547,8 @@ function App() {
                             <button
                               type="button"
                               className="course-button"
-                              aria-pressed={selectedCourse === course.id}
-                              onClick={() => setSelectedCourse(course.id)}
+                              aria-pressed={routeCourseId === course.id}
+                              onClick={() => navigate(`/courses/${course.id}`)}
                             >
                               {course.course_name}
                             </button>
@@ -555,12 +566,12 @@ function App() {
                   <h2>
                     {courses.length === 0
                       ? 'No courses available'
-                      : selectedCourse === null
+                      : routeCourseId === null
                         ? 'Select a course'
-                        : courseName(selectedCourse)}
+                        : courseName(routeCourseId)}
                   </h2>
 
-                  {selectedCourse === null ? (
+                  {routeCourseId === null ? (
                     courses.length === 0 ? null : (
                       <p className="empty-message">
                         Select a course to view its assignments.
@@ -569,7 +580,7 @@ function App() {
                   ) : (
                     <ul className="item-list">
                       {assignments
-                        .filter((assignment) => assignment.course_id === selectedCourse)
+                        .filter((assignment) => assignment.course_id === routeCourseId)
                         .map((assignment) => (
                           <li key={assignment.id}>
                             <div className="assignment-info">
@@ -582,7 +593,7 @@ function App() {
                           </li>
                         ))}
                       {!assignments.some(
-                        (assignment) => assignment.course_id === selectedCourse
+                        (assignment) => assignment.course_id === routeCourseId
                       ) && (
                         <li>
                           <p className="empty-message">

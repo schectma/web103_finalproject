@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { vi, test, expect } from 'vitest'
+import { MemoryRouter } from 'react-router'
 import App from './App.jsx'
 import { CurrentUserProvider } from './CurrentUserContext.jsx'
 
@@ -17,7 +18,7 @@ vi.mock('./components/StudyPlanForm.jsx', () => ({
 test('renders the Course Tracking navigation', () => {
   vi.stubGlobal('fetch', vi.fn(() => new Promise(() => {})))
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   expect(
     screen.getByRole('button', { name: 'Courses' })
@@ -34,7 +35,7 @@ test('opens the Courses page and displays its loading state', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(
     screen.getByRole('button', { name: 'Courses' })
@@ -92,7 +93,7 @@ test('displays courses and their assignment counts', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
@@ -150,7 +151,7 @@ test('displays an empty state when a course has no assignments', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
@@ -190,7 +191,7 @@ test('displays an empty state when no courses exist', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
@@ -230,7 +231,7 @@ test('displays an error when the courses API fails', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
@@ -265,7 +266,7 @@ test('rejects an invalid courses API response', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
@@ -310,7 +311,7 @@ test('displays an error when course assignments cannot load', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(screen.getByRole('button', { name: 'Courses' }))
 
@@ -345,7 +346,7 @@ test('passes the selected TA ID to the Study Plan form', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(screen.getByRole('button', { name: /study plans/i }))
 
@@ -413,7 +414,7 @@ test('refreshes the study plan list after a successful save', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(screen.getByRole('button', { name: 'Study Plans' }))
 
@@ -467,7 +468,7 @@ test('shows the study plan count on the dashboard', async () => {
 
   vi.stubGlobal('fetch', fetchMock)
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   const label = await screen.findByText('Study plans')
 
@@ -511,7 +512,7 @@ test('filters assignments by course and restores all assignments', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(screen.getByRole('button', { name: 'Assignments' }))
 
@@ -567,7 +568,7 @@ test('shows an empty state when the selected course has no assignments', async (
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(screen.getByRole('button', { name: 'Assignments' }))
 
@@ -630,7 +631,7 @@ test('creates an assignment using the selected TA ID', async () => {
 
   const user = (await import('@testing-library/user-event')).default.setup()
 
-  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+  render(<MemoryRouter><CurrentUserProvider><App /></CurrentUserProvider></MemoryRouter>)
 
   await user.click(screen.getByRole('button', { name: 'Assignments' }))
 
