@@ -1,5 +1,6 @@
 import app from './app.js'
 import pool from './db.js'
+import { readFileSync } from 'node:fs'
 
 const PORT = process.env.PORT || 3000
 
@@ -17,6 +18,14 @@ await pool.query(`
   );
   CREATE INDEX IF NOT EXISTS study_plans_course_id_idx ON study_plans(course_id);
 `)
+
+// Make sure comments exists (idempotent migration; never touches existing tables)
+await pool.query(
+  readFileSync(
+    new URL('./migrations/001_create_study_plan_comments.sql', import.meta.url),
+    'utf8'
+  )
+)
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
