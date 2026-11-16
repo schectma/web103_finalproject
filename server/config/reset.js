@@ -1,6 +1,7 @@
 import './dotenv.js'
 import pool from '../db.js'
 import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 
 const data = JSON.parse(readFileSync(new URL('./data/data.json', import.meta.url)))
 
@@ -192,9 +193,9 @@ const seedSubmissionsTable = async () => {
   console.log('submissions seeded successfully')
 }
 
-const resetDatabase = async () => {
-  try {
-    assertSafeTarget()
+// Drops and rebuilds every table, then reseeds. No safety guard: callers decide.
+// The web route (routes/reset.js) is gated by ALLOW_WEB_RESET instead.
+export const resetDatabase = async () => {
     await dropAllTables()
     await createUsersTable()
     await createCoursesTable()
@@ -209,6 +210,13 @@ const resetDatabase = async () => {
     await seedAssignmentsTable()
     await seedStudyPlansTable()
     await seedSubmissionsTable()
+}
+
+// CLI entry point (npm run reset): keeps the disposable-database guard
+const runFromCli = async () => {
+  try {
+    assertSafeTarget()
+    await resetDatabase()
   } catch (err) {
     console.error('error resetting database', err.message)
     process.exitCode = 1
@@ -217,4 +225,6 @@ const resetDatabase = async () => {
   }
 }
 
-resetDatabase()
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  runFromCli()
+}
