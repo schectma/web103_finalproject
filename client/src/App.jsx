@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import StudyPlanForm from './components/StudyPlanForm.jsx'
-import StudyPlanComments from './components/StudyPlanComments.jsx'
-import PriorityBadge from './components/PriorityBadge.jsx'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router'
+import DashboardPage from './pages/DashboardPage.jsx'
+import AssignmentsPage from './pages/AssignmentsPage.jsx'
+import StudyPlansPage from './pages/StudyPlansPage.jsx'
+import CoursesPage from './pages/CoursesPage.jsx'
+import AssignmentDetailPage from './pages/AssignmentDetailPage.jsx'
 import { useCurrentUser } from './useCurrentUser.js'
 
 const emptyForm = {
@@ -12,23 +15,17 @@ const emptyForm = {
   due_date: ''
 }
 
-const formatDue = (due) => {
-  if (!due) return 'No due date'
-
-  const date = new Date(due)
-
-  if (Number.isNaN(date.getTime())) return 'Invalid date'
-
-  return date.toLocaleDateString(undefined, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  })
-}
-
 function App() {
   const [health, setHealth] = useState('checking...')
-  const [page, setPage] = useState('dashboard')
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const page = pathname.startsWith('/courses')
+    ? 'courses'
+    : pathname.startsWith('/assignments')
+      ? 'assignments'
+      : pathname.startsWith('/study-plans')
+        ? 'study-plans'
+        : 'dashboard'
   const { id: currentUserId, role, users, setCurrentUserId } = useCurrentUser()
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [form, setForm] = useState(emptyForm)
@@ -272,7 +269,7 @@ function App() {
             aria-current={
               page === 'dashboard' ? 'page' : undefined
             }
-            onClick={() => setPage('dashboard')}
+            onClick={() => navigate('/')}
           >
             Dashboard
           </button>
@@ -281,7 +278,7 @@ function App() {
             type="button"
             className={page === 'courses' ? 'nav-link active' : 'nav-link'}
             aria-current={page === 'courses' ? 'page' : undefined}
-            onClick={() => setPage('courses')}
+            onClick={() => navigate('/courses')}
           >
             Courses
           </button>
@@ -296,7 +293,7 @@ function App() {
             aria-current={
               page === 'assignments' ? 'page' : undefined
             }
-            onClick={() => setPage('assignments')}
+            onClick={() => navigate('/assignments')}
           >
             Assignments
           </button>
@@ -311,7 +308,7 @@ function App() {
             aria-current={
               page === 'study-plans' ? 'page' : undefined
             }
-            onClick={() => setPage('study-plans')}
+            onClick={() => navigate('/study-plans')}
           >
             Study Plans
           </button>
@@ -333,479 +330,79 @@ function App() {
       </header>
 
       <main className="dashboard">
-        {page === 'dashboard' && (
-          <>
-            <section className="welcome-section">
-              <div>
-                <h1>Good morning!</h1>
-                <p>Here is your coursework at a glance.</p>
-              </div>
-            </section>
-
-            {error && (
-              <p className="empty-message" role="alert">
-                {error}
-              </p>
-            )}
-
-            {loading ? (
-              <p role="status">Loading dashboard...</p>
-            ) : error ? (
-              <p className="empty-message" role="status">
-                Dashboard data is unavailable. Please try
-                refreshing the page.
-              </p>
-            ) : (
-              <>
-                <section
-                  className="summary-grid"
-                  aria-label="Dashboard summary"
-                >
-                  <article className="summary-card purple">
-                    <div
-                      className="summary-icon"
-                      aria-hidden="true"
-                    >
-                      📚
-                    </div>
-
-                    <div>
-                      <p>My courses</p>
-                      <strong>{courses.length}</strong>
-                    </div>
-                  </article>
-
-                  <article className="summary-card peach">
-                    <div
-                      className="summary-icon"
-                      aria-hidden="true"
-                    >
-                      ✓
-                    </div>
-
-                    <div>
-                      <p>Upcoming assignments</p>
-                      <strong>{visibleAssignments.length}</strong>
-                    </div>
-                  </article>
-
-                  <article className="summary-card green">
-                    <div
-                      className="summary-icon"
-                      aria-hidden="true"
-                    >
-                      📝
-                    </div>
-
-                    <div>
-                      <p>Study plans</p>
-                      <strong>{studyPlans.length}</strong>
-                    </div>
-                  </article>
-                </section>
-
-                <section className="content-grid">
-                  <article className="content-card">
-                    <h2>My courses</h2>
-
-                    {courses.length === 0 ? (
-                      <p className="empty-message">
-                        No courses available.
-                      </p>
-                    ) : (
-                      <ul className="item-list">
-                        {courses.map((course) => (
-                          <li key={course.id}>
-                            <button
-                              type="button"
-                              className="course-button"
-                              aria-pressed={
-                                selectedCourse === course.id
-                              }
-                              onClick={() =>
-                                setSelectedCourse(
-                                  selectedCourse === course.id
-                                    ? null
-                                    : course.id
-                                )
-                              }
-                            >
-                              {course.course_name}
-                            </button>
-
-                            <span className="item-tag">
-                              Course
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </article>
-
-                  <article className="content-card">
-                    <h2>Due soon</h2>
-
-                    {selectedCourse !== null && (
-                      <div className="course-filter">
-                        <p>
-                          Showing assignments for{' '}
-                          <strong>
-                            {courseName(selectedCourse)}
-                          </strong>
-                        </p>
-
-                        <button
-                          type="button"
-                          className="reset-filter-button"
-                          onClick={() =>
-                            setSelectedCourse(null)
-                          }
-                        >
-                          Show all courses
-                        </button>
-                      </div>
-                    )}
-
-                    {visibleAssignments.length > 0 ? (
-                      <ul className="item-list">
-                        {visibleAssignments.map((assignment) => (
-                          <li key={assignment.id}>
-                            <div className="assignment-info">
-                              <span className="item-name">
-                                {assignment.title}
-                              </span>
-
-                              <small>
-                                {courseName(
-                                  assignment.course_id
-                                )}
-                              </small>
-                            </div>
-
-                            <PriorityBadge priority={assignment.priority} />
-                            <span className="item-tag due-tag">
-                              {formatDue(
-                                assignment.due_date
-                              )}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="empty-message">
-                        {selectedCourse !== null
-                          ? 'No upcoming assignments for this course.'
-                          : 'No upcoming assignments.'}
-                      </p>
-                    )}
-                  </article>
-                </section>
-              </>
-            )}
-          </>
-        )}
-
-        {page === 'courses' && (
-          <>
-            <section className="welcome-section">
-              <div>
-                <h1>My Courses</h1>
-                <p>View your courses and their assignments.</p>
-              </div>
-            </section>
-
-            {loading ? (
-              <p role="status">Loading courses...</p>
-            ) : error ? (
-              <p className="empty-message" role="alert">{error}</p>
-            ) : (
-              <section className="content-grid">
-                <article className="content-card">
-                  <h2>Courses ({courses.length})</h2>
-                  {courses.length === 0 ? (
-                    <p className="empty-message">No courses available.</p>
-                  ) : (
-                    <ul className="item-list">
-                      {courses.map((course) => {
-                        const count = assignments.filter(
-                          (assignment) => assignment.course_id === course.id
-                        ).length
-
-                        return (
-                          <li key={course.id}>
-                            <button
-                              type="button"
-                              className="course-button"
-                              aria-pressed={selectedCourse === course.id}
-                              onClick={() => setSelectedCourse(course.id)}
-                            >
-                              {course.course_name}
-                            </button>
-                            <span className="item-tag">
-                              {count} {count === 1 ? 'assignment' : 'assignments'}
-                            </span>
-                          </li>
-                        )
-                      })}
-                    </ul>
-                  )}
-                </article>
-
-                <article className="content-card">
-                  <h2>
-                    {courses.length === 0
-                      ? 'No courses available'
-                      : selectedCourse === null
-                        ? 'Select a course'
-                        : courseName(selectedCourse)}
-                  </h2>
-
-                  {selectedCourse === null ? (
-                    courses.length === 0 ? null : (
-                      <p className="empty-message">
-                        Select a course to view its assignments.
-                      </p>
-                    )
-                  ) : (
-                    <ul className="item-list">
-                      {assignments
-                        .filter((assignment) => assignment.course_id === selectedCourse)
-                        .map((assignment) => (
-                          <li key={assignment.id}>
-                            <div className="assignment-info">
-                              <span className="item-name">{assignment.title}</span>
-                            </div>
-                            <PriorityBadge priority={assignment.priority} />
-                            <span className="item-tag due-tag">
-                              {formatDue(assignment.due_date)}
-                            </span>
-                          </li>
-                        ))}
-                      {!assignments.some(
-                        (assignment) => assignment.course_id === selectedCourse
-                      ) && (
-                        <li>
-                          <p className="empty-message">
-                            No assignments for this course.
-                          </p>
-                        </li>
-                      )}
-                    </ul>
-                  )}
-                </article>
-              </section>
-            )}
-          </>
-        )}
-
-        {page === 'assignments' && (
-          <>
-            <section className="welcome-section">
-              <div>
-                <h1>Assignments</h1>
-                <p>Create assignments and see what is due.</p>
-              </div>
-            </section>
-
-            {loading ? (
-              <p role="status">
-                Loading assignments...
-              </p>
-            ) : error ? (
-              <p
-                className="empty-message"
-                role="alert"
-              >
-                {error}
-              </p>
-            ) : (
-              <>
-              <section className="content-card">
-                <h2>All assignments</h2>
-
-                <div className="course-filter">
-                  <label htmlFor="assignment-course-filter">
-                    Filter by course
-                  </label>
-                  <select
-                    id="assignment-course-filter"
-                    value={assignmentCourseFilter}
-                    onChange={(event) =>
-                      setAssignmentCourseFilter(event.target.value)
-                    }
-                  >
-                    <option value="all">All Courses</option>
-                    {courses.map((course) => (
-                      <option key={course.id} value={String(course.id)}>
-                        {course.course_name}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    type="button"
-                    className="reset-filter-button"
-                    onClick={() => setAssignmentCourseFilter('all')}
-                    disabled={assignmentCourseFilter === 'all'}
-                    style={{
-                      visibility: assignmentCourseFilter === 'all'
-                        ? 'hidden'
-                        : 'visible'
-                    }}
-                  >
-                    Clear filter
-                  </button>
-                </div>
-
-                <p role="status" aria-live="polite">
-                  Showing {filteredPageAssignments.length}{' '}
-                  {filteredPageAssignments.length === 1
-                    ? 'assignment'
-                    : 'assignments'}
-                </p>
-
-                {filteredPageAssignments.length > 0 ? (
-                  <ul className="item-list">
-                    {filteredPageAssignments.map((assignment) => (
-                      <li key={assignment.id}>
-                        <div className="assignment-info">
-                          <span className="item-name">
-                            {assignment.title}
-                          </span>
-                          <small>{courseName(assignment.course_id)}</small>
-                        </div>
-                        <PriorityBadge priority={assignment.priority} />
-                        <span className="item-tag due-tag">
-                          {formatDue(assignment.due_date)}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="empty-message">
-                    {assignmentCourseFilter === 'all'
-                      ? 'No assignments available.'
-                      : 'No assignments found for this course.'}
-                  </p>
-                )}
-              </section>
-
-              {role === 'ta' && (
-              <section className="content-card form-card">
-                <h2>Create assignment</h2>
-                <form className="assignment-form" onSubmit={submitAssignment}>
-                  <label>
-                    Course
-                    <select name="course_id" value={form.course_id} onChange={updateField} required>
-                      <option value="">Select a course</option>
-                      {courses.map((course) => (
-                        <option key={course.id} value={course.id}>
-                          {course.course_name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label>
-                    Title
-                    <input name="title" value={form.title} onChange={updateField} required />
-                  </label>
-
-                  <label>
-                    Due date
-                    <input
-                      type="datetime-local"
-                      name="due_date"
-                      value={form.due_date}
-                      onChange={updateField}
-                      required
-                    />
-                  </label>
-
-                  <label>
-                    Priority
-                    <input
-                      type="number"
-                      min="1"
-                      name="priority"
-                      value={form.priority}
-                      onChange={updateField}
-                    />
-                  </label>
-
-                  <label className="wide">
-                    Description
-                    <textarea
-                      name="description"
-                      rows="3"
-                      value={form.description}
-                      onChange={updateField}
-                    />
-                  </label>
-
-                  {formErrors.length > 0 && (
-                    <ul className="form-errors wide" role="alert">
-                      {formErrors.map((message) => (
-                        <li key={message}>{message}</li>
-                      ))}
-                    </ul>
-                  )}
-                  {success && <p className="form-success wide" role="status">{success}</p>}
-
-                  <button type="submit" className="wide" disabled={submitting}>
-                    {submitting ? 'Creating...' : 'Create assignment'}
-                  </button>
-                </form>
-              </section>
-              )}
-              </>
-            )}
-          </>
-        )}
-
-        {page === 'study-plans' && (
-          <>
-            <section className="welcome-section">
-              <div>
-                <h1>Study Plans</h1>
-                <p>
-                  Create and organize your study plans
-                  for each course.
-                </p>
-              </div>
-            </section>
-
-            {role === 'ta' && (
-              <StudyPlanForm creatorId={currentUserId} onCreated={refreshStudyPlans} />
-            )}
-
-            <section className="study-plans-list">
-              <h2>Available Study Plans ({studyPlans.length})</h2>
-
-              {loading ? (
-                <p>Loading study plans...</p>
-              ) : error ? (
-                <p role="alert">{error}</p>
-              ) : studyPlans.length === 0 ? (
-                <p>No study plans available yet.</p>
-              ) : (
-                <div className="study-plans-grid">
-                  {studyPlans.map((plan) => (
-                    <article className="study-plan-card" key={plan.id}>
-                      <h3>{plan.title}</h3>
-                      <p><strong>Course:</strong> {plan.course_name}</p>
-                      <p><strong>Topic:</strong> {plan.topic_name || 'General'}</p>
-                      <p><strong>Created by:</strong> {plan.creator_name}</p>
-                      <div className="study-plan-content">
-                        {plan.content}
-                      </div>
-                      <StudyPlanComments studyPlanId={plan.id} />
-                    </article>
-                  ))}
-                </div>
-              )}
-            </section>
-          </>
-        )}
+        <Routes>
+          <Route
+            path="/courses/:courseId?"
+            element={
+              <CoursesPage
+                courses={courses}
+                assignments={assignments}
+                loading={loading}
+                error={error}
+              />
+            }
+          />
+          <Route
+            path="/assignments/:assignmentId"
+            element={
+              <AssignmentDetailPage
+                courses={courses}
+                assignments={assignments}
+                loading={loading}
+              />
+            }
+          />
+          <Route
+            path="/study-plans"
+            element={
+              <StudyPlansPage
+                role={role}
+                currentUserId={currentUserId}
+                studyPlans={studyPlans}
+                refreshStudyPlans={refreshStudyPlans}
+                loading={loading}
+                error={error}
+              />
+            }
+          />
+          <Route
+            path="/assignments"
+            element={
+              <AssignmentsPage
+                courses={courses}
+                loading={loading}
+                error={error}
+                role={role}
+                form={form}
+                formErrors={formErrors}
+                success={success}
+                submitting={submitting}
+                updateField={updateField}
+                submitAssignment={submitAssignment}
+                courseName={courseName}
+                assignmentCourseFilter={assignmentCourseFilter}
+                setAssignmentCourseFilter={setAssignmentCourseFilter}
+                filteredPageAssignments={filteredPageAssignments}
+              />
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <DashboardPage
+                courses={courses}
+                studyPlans={studyPlans}
+                loading={loading}
+                error={error}
+                selectedCourse={selectedCourse}
+                setSelectedCourse={setSelectedCourse}
+                visibleAssignments={visibleAssignments}
+                courseName={courseName}
+              />
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
 
         <p className="api-status" role="status">
           API status: {health}
