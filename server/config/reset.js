@@ -113,6 +113,15 @@ const createStudyPlansTable = async () => {
   console.log('study_plans table created successfully')
 }
 
+const createCommentsTable = async () => {
+  const sql = readFileSync(
+    new URL('../migrations/001_create_study_plan_comments.sql', import.meta.url),
+    'utf8'
+  )
+  await pool.query(sql)
+  console.log('comments table created successfully')
+}
+
 const seedUsersTable = async () => {
   for (const user of data.users) {
     await pool.query(
@@ -172,6 +181,7 @@ const resetDatabase = async () => {
     await createTopicsTable()
     await createAssignmentsTable()
     await createStudyPlansTable()
+    await createCommentsTable()
     await seedUsersTable()
     await seedCoursesTable()
     await seedTopicsTable()
