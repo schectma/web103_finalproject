@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router'
+import ResetDatabaseButton from './components/ResetDatabaseButton.jsx'
 import DashboardPage from './pages/DashboardPage.jsx'
 import AssignmentsPage from './pages/AssignmentsPage.jsx'
 import StudyPlansPage from './pages/StudyPlansPage.jsx'
@@ -407,6 +408,8 @@ function App() {
         <p className="api-status" role="status">
           API status: {health}
         </p>
+
+        <ResetDatabaseButton />
       </main>
     </div>
   )
