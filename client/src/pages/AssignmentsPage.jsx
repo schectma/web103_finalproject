@@ -4,22 +4,83 @@ import PrioritySortControl from '../components/PrioritySortControl.jsx'
 import PriorityBadge from '../components/PriorityBadge.jsx'
 import { formatDue } from '../formatDue.js'
 
+const emptyForm = {
+  course_id: '',
+  priority: '',
+  title: '',
+  description: '',
+  due_date: ''
+}
+
 function AssignmentsPage({
   courses,
+  assignments,
   loading,
   error,
   role,
-  form,
-  formErrors,
-  success,
-  submitting,
-  updateField,
-  submitAssignment,
-  courseName,
-  assignmentCourseFilter,
-  setAssignmentCourseFilter,
-  filteredPageAssignments
+  currentUserId,
+  onAssignmentCreated
 }) {
+  const [form, setForm] = useState(emptyForm)
+  const [formErrors, setFormErrors] = useState([])
+  const [success, setSuccess] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [assignmentCourseFilter, setAssignmentCourseFilter] = useState('all')
+
+  const courseName = (id) =>
+    courses.find((course) => course.id === id)?.course_name ??
+    'Unknown course'
+
+  const filteredPageAssignments =
+    assignmentCourseFilter === 'all'
+      ? assignments
+      : assignments.filter(
+          (assignment) => String(assignment.course_id) === assignmentCourseFilter
+        )
+
+  const updateField = (event) =>
+    setForm({ ...form, [event.target.name]: event.target.value })
+
+  const submitAssignment = async (event) => {
+    event.preventDefault()
+    setFormErrors([])
+    setSuccess('')
+
+    if (submitting) return
+    setSubmitting(true)
+
+    const course = courses.find((c) => c.id === Number(form.course_id))
+
+    try {
+      const res = await fetch('/api/assignments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          course_id: course ? course.id : null,
+          created_by: currentUserId,
+          priority: form.priority === '' ? null : Number(form.priority),
+          title: form.title,
+          description: form.description === '' ? null : form.description,
+          due_date: form.due_date
+        })
+      })
+      const data = await res.json()
+
+      if (!res.ok) {
+        setFormErrors(data.errors ?? [data.error ?? 'Could not create assignment'])
+        return
+      }
+
+      onAssignmentCreated(data)
+      setForm(emptyForm)
+      setSuccess(`Created "${data.title}"`)
+    } catch {
+      setFormErrors(['Server unreachable'])
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   const [assignmentSort, setAssignmentSort] = useState('due_date')
 
   const sortedPageAssignments = [...filteredPageAssignments].sort((a, b) => {
