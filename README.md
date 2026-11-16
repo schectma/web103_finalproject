@@ -50,11 +50,11 @@ Addition and linking of courses to assignments.
 
 https://imgur.com/a/ugwYsTc
 
-### Comments
+### Comments ✅
 
 Fields for marking and notating assignments and plans.
 
-[gif goes here]
+https://imgur.com/a/ALtZI3w
 
 
 ### Study Plan Creation ✅
@@ -69,17 +69,17 @@ Additional field specifically for categorizing and associating courses, assignme
 
 [gif goes here]
 
-### Triage System
+### Triage System ✅
 
 Rankings for prioritization of assignments.
 
-[gif goes here]
+https://imgur.com/a/5gYQopN
 
-### Assignment Completion
+### Assignment Completion ✅
 
 Indicate submission or critical lapsing of assignment by clearing it from visible collections.
 
-[gif goes here]
+https://imgur.com/a/L1Tv8dH
 
 ### Filtering ✅
 
