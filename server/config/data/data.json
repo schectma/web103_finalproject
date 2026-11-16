@@ -50,5 +50,10 @@
       "title": "Sorting Algorithms Practice",
       "content": "Implement merge sort and quicksort, then compare their running times."
     }
+  ],
+  "submissions": [
+    { "assignment_id": 1, "user_id": 3, "status": "completed", "notes": "API finished, all routes tested." },
+    { "assignment_id": 1, "user_id": 4, "status": "in_progress", "notes": null },
+    { "assignment_id": 2, "user_id": 3, "status": "in_progress", "notes": "Merge sort done, quicksort next." }
   ]
 }
