@@ -675,3 +675,107 @@ test('creates an assignment using the selected TA ID', async () => {
     })
   })
 })
+
+test('sorts assignments by priority and due date while respecting course filters', async () => {
+  const courses = [
+    { id: 1, course_name: 'Web Development', ta_id: 1 },
+    { id: 2, course_name: 'Database Systems', ta_id: 1 }
+  ]
+
+  const assignments = {
+    1: [
+      { id: 101, course_id: 1, title: 'No Priority Task', priority: null, due_date: '2026-12-01' },
+      { id: 102, course_id: 1, title: 'Low Task', priority: 1, due_date: '2026-12-02' },
+      { id: 103, course_id: 1, title: 'High Task A', priority: 3, due_date: '2026-12-05' },
+      { id: 104, course_id: 1, title: 'High Task B', priority: 3, due_date: '2026-12-05' }
+    ],
+    2: [
+      { id: 105, course_id: 2, title: 'Medium Task', priority: 2, due_date: '2026-12-03' },
+      { id: 106, course_id: 2, title: 'High Task Earlier', priority: 3, due_date: '2026-12-04' }
+    ]
+  }
+
+  vi.stubGlobal('fetch', vi.fn(async (url) => {
+    const data = {
+      '/api/health': { status: 'ok', db: 'connected' },
+      '/api/users': [],
+      '/api/courses': courses,
+      '/api/courses/1/assignments': assignments[1],
+      '/api/courses/2/assignments': assignments[2],
+      '/api/study-plans': []
+    }[url]
+
+    if (data === undefined) {
+      throw new Error(`Unexpected API request: ${url}`)
+    }
+
+    return { ok: true, json: async () => data }
+  }))
+
+  const user = (await import('@testing-library/user-event')).default.setup()
+
+  render(<CurrentUserProvider><App /></CurrentUserProvider>)
+
+  await user.click(screen.getByRole('button', { name: 'Assignments' }))
+  expect(await screen.findByText('Showing 6 assignments')).toBeInTheDocument()
+
+  const titles = () => {
+    const list = screen.getByText('No Priority Task').closest('ul')
+    return [...list.querySelectorAll('li .item-name')]
+      .map((element) => element.textContent)
+  }
+
+  expect(titles()).toEqual([
+    'No Priority Task',
+    'Low Task',
+    'Medium Task',
+    'High Task Earlier',
+    'High Task A',
+    'High Task B'
+  ])
+
+  const sort = screen.getByLabelText('Sort by')
+  expect(sort).toHaveValue('due_date')
+
+  await user.selectOptions(sort, 'priority')
+
+  expect(titles()).toEqual([
+    'High Task Earlier',
+    'High Task A',
+    'High Task B',
+    'Medium Task',
+    'Low Task',
+    'No Priority Task'
+  ])
+
+  await user.selectOptions(screen.getByLabelText('Filter by course'), '1')
+
+  expect(screen.getByText('Showing 4 assignments')).toBeInTheDocument()
+  expect(titles()).toEqual([
+    'High Task A',
+    'High Task B',
+    'Low Task',
+    'No Priority Task'
+  ])
+
+  await user.selectOptions(sort, 'due_date')
+
+  expect(titles()).toEqual([
+    'No Priority Task',
+    'Low Task',
+    'High Task A',
+    'High Task B'
+  ])
+
+  await user.selectOptions(screen.getByLabelText('Filter by course'), 'all')
+
+  expect(screen.getByText('Showing 6 assignments')).toBeInTheDocument()
+  expect(titles()).toEqual([
+    'No Priority Task',
+    'Low Task',
+    'Medium Task',
+    'High Task Earlier',
+    'High Task A',
+    'High Task B'
+  ])
+})

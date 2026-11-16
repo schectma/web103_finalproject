@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import StudyPlanForm from './components/StudyPlanForm.jsx'
 import StudyPlanComments from './components/StudyPlanComments.jsx'
 import PriorityBadge from './components/PriorityBadge.jsx'
+import PrioritySortControl from './components/PrioritySortControl.jsx'
 import { useCurrentUser } from './useCurrentUser.js'
 
 const emptyForm = {
@@ -42,6 +43,7 @@ function App() {
   const [error, setError] = useState('')
   const [currentTime] = useState(() => Date.now())
   const [assignmentCourseFilter, setAssignmentCourseFilter] = useState('all')
+  const [assignmentSort, setAssignmentSort] = useState('due_date')
 
   // Assignments page filtering
   const filteredPageAssignments =
@@ -50,6 +52,30 @@ function App() {
       : assignments.filter(
           (assignment) => String(assignment.course_id) === assignmentCourseFilter
         )
+
+  // Sort the filtered assignments without mutating the original data.
+  const sortedPageAssignments = [...filteredPageAssignments].sort((a, b) => {
+    if (assignmentSort === 'priority') {
+      const normalizePriority = (value) =>
+        value == null || value === ''
+          ? 0
+          : [1, 2, 3].includes(Number(value)) ? Number(value) : 0
+
+      const priorityA = normalizePriority(a.priority)
+      const priorityB = normalizePriority(b.priority)
+
+      if (priorityA !== priorityB) return priorityB - priorityA
+    }
+
+    const dueA = a.due_date ? new Date(a.due_date).getTime() : Infinity
+    const dueB = b.due_date ? new Date(b.due_date).getTime() : Infinity
+    const validDueA = Number.isNaN(dueA) ? Infinity : dueA
+    const validDueB = Number.isNaN(dueB) ? Infinity : dueB
+
+    if (validDueA !== validDueB) return validDueA - validDueB
+
+    return Number(a.id) - Number(b.id)
+  })
 
   useEffect(() => {
     const controller = new AbortController()
@@ -656,6 +682,15 @@ function App() {
                   </button>
                 </div>
 
+                <PrioritySortControl
+                  options={[
+                    { value: 'due_date', label: 'Due date (earliest first)' },
+                    { value: 'priority', label: 'Priority (high to low)' }
+                  ]}
+                  value={assignmentSort}
+                  onChange={setAssignmentSort}
+                />
+
                 <p role="status" aria-live="polite">
                   Showing {filteredPageAssignments.length}{' '}
                   {filteredPageAssignments.length === 1
@@ -665,7 +700,7 @@ function App() {
 
                 {filteredPageAssignments.length > 0 ? (
                   <ul className="item-list">
-                    {filteredPageAssignments.map((assignment) => (
+                    {sortedPageAssignments.map((assignment) => (
                       <li key={assignment.id}>
                         <div className="assignment-info">
                           <span className="item-name">
