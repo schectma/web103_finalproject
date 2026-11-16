@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Route, Routes, useLocation, useNavigate } from 'react-router'
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router'
 import StudyPlanForm from './components/StudyPlanForm.jsx'
 import StudyPlanComments from './components/StudyPlanComments.jsx'
 import CoursesPage from './pages/CoursesPage.jsx'
+import AssignmentDetailPage from './pages/AssignmentDetailPage.jsx'
 import { formatDue } from './formatDue.js'
 import PriorityBadge from './components/PriorityBadge.jsx'
 import { useCurrentUser } from './useCurrentUser.js'
@@ -514,9 +515,19 @@ function App() {
               />
             }
           />
+          <Route
+            path="/assignments/:assignmentId"
+            element={
+              <AssignmentDetailPage
+                courses={courses}
+                assignments={assignments}
+                loading={loading}
+              />
+            }
+          />
         </Routes>
 
-        {page === 'assignments' && (
+        {pathname === '/assignments' && (
           <>
             <section className="welcome-section">
               <div>
@@ -586,9 +597,12 @@ function App() {
                     {filteredPageAssignments.map((assignment) => (
                       <li key={assignment.id}>
                         <div className="assignment-info">
-                          <span className="item-name">
+                          <Link
+                            className="item-name"
+                            to={`/assignments/${assignment.id}`}
+                          >
                             {assignment.title}
-                          </span>
+                          </Link>
                           <small>{courseName(assignment.course_id)}</small>
                         </div>
                         <PriorityBadge priority={assignment.priority} />
