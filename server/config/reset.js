@@ -32,6 +32,7 @@ const assertSafeTarget = () => {
 const dropAllTables = async () => {
   await pool.query(`
     DROP TABLE IF EXISTS comments;
+    DROP TABLE IF EXISTS submissions;
     DROP TABLE IF EXISTS study_plans;
     DROP TABLE IF EXISTS assignments;
     DROP TABLE IF EXISTS topics;
@@ -122,6 +123,15 @@ const createCommentsTable = async () => {
   console.log('comments table created successfully')
 }
 
+const createSubmissionsTable = async () => {
+  const sql = readFileSync(
+    new URL('../migrations/002_create_submissions.sql', import.meta.url),
+    'utf8'
+  )
+  await pool.query(sql)
+  console.log('submissions table created successfully')
+}
+
 const seedUsersTable = async () => {
   for (const user of data.users) {
     await pool.query(
@@ -172,6 +182,16 @@ const seedStudyPlansTable = async () => {
   console.log('study_plans seeded successfully')
 }
 
+const seedSubmissionsTable = async () => {
+  for (const sub of data.submissions) {
+    await pool.query(
+      'INSERT INTO submissions (assignment_id, user_id, status, notes) VALUES ($1, $2, $3, $4)',
+      [sub.assignment_id, sub.user_id, sub.status, sub.notes]
+    )
+  }
+  console.log('submissions seeded successfully')
+}
+
 const resetDatabase = async () => {
   try {
     assertSafeTarget()
@@ -182,11 +202,13 @@ const resetDatabase = async () => {
     await createAssignmentsTable()
     await createStudyPlansTable()
     await createCommentsTable()
+    await createSubmissionsTable()
     await seedUsersTable()
     await seedCoursesTable()
     await seedTopicsTable()
     await seedAssignmentsTable()
     await seedStudyPlansTable()
+    await seedSubmissionsTable()
   } catch (err) {
     console.error('error resetting database', err.message)
     process.exitCode = 1
