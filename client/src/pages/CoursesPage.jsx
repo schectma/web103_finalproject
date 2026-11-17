@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router'
+import { Link, useNavigate, useParams } from 'react-router'
 import PriorityBadge from '../components/PriorityBadge.jsx'
 import { formatDue } from '../formatDue.js'
 
@@ -79,7 +79,12 @@ function CoursesPage({ courses, assignments, loading, error }) {
                     .map((assignment) => (
                       <li key={assignment.id}>
                         <div className="assignment-info">
-                          <span className="item-name">{assignment.title}</span>
+                          <Link
+                            className="item-name"
+                            to={`/assignments/${assignment.id}`}
+                          >
+                            {assignment.title}
+                          </Link>
                         </div>
                         <PriorityBadge priority={assignment.priority} />
                         <span className="item-tag due-tag">
