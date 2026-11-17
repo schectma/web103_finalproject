@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
@@ -20,50 +19,20 @@ const assignments = [
 ]
 
 function renderAssignmentsPage(overrides = {}) {
-  function TestPage() {
-    const [filter, setFilter] = useState('all')
-
-    const allAssignments =
-      overrides.filteredPageAssignments ?? assignments
-
-    const filteredAssignments =
-      filter === 'all'
-        ? allAssignments
-        : allAssignments.filter(
-            (assignment) => String(assignment.course_id) === filter
-          )
-
-    const props = {
-      courses,
-      loading: false,
-      error: '',
-      role: 'student',
-      form: {
-        course_id: '',
-        title: '',
-        due_date: '',
-        priority: '',
-        description: ''
-      },
-      formErrors: [],
-      success: '',
-      submitting: false,
-      updateField: vi.fn(),
-      submitAssignment: vi.fn(),
-      courseName: (courseId) =>
-        courses.find((course) => course.id === courseId)?.course_name ?? 'Unknown',
-      ...overrides,
-      assignmentCourseFilter: filter,
-      setAssignmentCourseFilter: setFilter,
-      filteredPageAssignments: filteredAssignments
-    }
-
-    return <AssignmentsPage {...props} />
-  }
+  const { filteredPageAssignments, ...rest } = overrides
 
   return render(
     <MemoryRouter>
-      <TestPage />
+      <AssignmentsPage
+        courses={courses}
+        assignments={filteredPageAssignments ?? assignments}
+        loading={false}
+        error=""
+        role="student"
+        currentUserId={1}
+        onAssignmentCreated={vi.fn()}
+        {...rest}
+      />
     </MemoryRouter>
   )
 }

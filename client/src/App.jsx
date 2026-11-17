@@ -7,14 +7,6 @@ import CoursesPage from './pages/CoursesPage.jsx'
 import AssignmentDetailPage from './pages/AssignmentDetailPage.jsx'
 import { useCurrentUser } from './useCurrentUser.js'
 
-const emptyForm = {
-  course_id: '',
-  priority: '',
-  title: '',
-  description: '',
-  due_date: ''
-}
-
 function App() {
   const [health, setHealth] = useState('checking...')
   const { pathname } = useLocation()
@@ -28,26 +20,12 @@ function App() {
         : 'dashboard'
   const { id: currentUserId, role, users, setCurrentUserId } = useCurrentUser()
   const [selectedCourse, setSelectedCourse] = useState(null)
-  const [form, setForm] = useState(emptyForm)
-  const [formErrors, setFormErrors] = useState([])
-  const [success, setSuccess] = useState('')
-  const [submitting, setSubmitting] = useState(false)
   const [courses, setCourses] = useState([])
   const [assignments, setAssignments] = useState([])
   const [studyPlans, setStudyPlans] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [currentTime] = useState(() => Date.now())
-  const [assignmentCourseFilter, setAssignmentCourseFilter] = useState('all')
-
-  // Assignments page filtering
-  const filteredPageAssignments =
-    assignmentCourseFilter === 'all'
-      ? assignments
-      : assignments.filter(
-          (assignment) => String(assignment.course_id) === assignmentCourseFilter
-        )
-
   useEffect(() => {
     const controller = new AbortController()
 
@@ -185,52 +163,12 @@ function App() {
     courses.find((course) => course.id === id)?.course_name ??
     'Unknown course'
 
-    const updateField = (event) =>
-    setForm({ ...form, [event.target.name]: event.target.value })
-
-  const submitAssignment = async (event) => {
-    event.preventDefault()
-    setFormErrors([])
-    setSuccess('')
-
-    if (submitting) return
-    setSubmitting(true)
-
-    const course = courses.find((c) => c.id === Number(form.course_id))
-
-    try {
-      const res = await fetch('/api/assignments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          course_id: course ? course.id : null,
-          created_by: currentUserId,
-          priority: form.priority === '' ? null : Number(form.priority),
-          title: form.title,
-          description: form.description === '' ? null : form.description,
-          due_date: form.due_date
-        })
-      })
-      const data = await res.json()
-
-      if (!res.ok) {
-        setFormErrors(data.errors ?? [data.error ?? 'Could not create assignment'])
-        return
-      }
-
-      setAssignments((prev) =>
-        [...prev, data].sort(
-          (a, b) => new Date(a.due_date) - new Date(b.due_date)
-        )
+  const addAssignment = (assignment) =>
+    setAssignments((prev) =>
+      [...prev, assignment].sort(
+        (x, y) => new Date(x.due_date) - new Date(y.due_date)
       )
-      setForm(emptyForm)
-      setSuccess(`Created "${data.title}"`)
-    } catch {
-      setFormErrors(['Server unreachable'])
-    } finally {
-      setSubmitting(false)
-    }
-  }
+    )
 
   const upcomingAssignments = assignments.filter((assignment) => {
     if (!assignment.due_date) return false
@@ -373,16 +311,9 @@ function App() {
                 loading={loading}
                 error={error}
                 role={role}
-                form={form}
-                formErrors={formErrors}
-                success={success}
-                submitting={submitting}
-                updateField={updateField}
-                submitAssignment={submitAssignment}
-                courseName={courseName}
-                assignmentCourseFilter={assignmentCourseFilter}
-                setAssignmentCourseFilter={setAssignmentCourseFilter}
-                filteredPageAssignments={filteredPageAssignments}
+                assignments={assignments}
+                currentUserId={currentUserId}
+                onAssignmentCreated={addAssignment}
               />
             }
           />
