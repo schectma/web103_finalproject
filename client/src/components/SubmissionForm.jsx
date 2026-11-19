@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 // Used for both creating (defaults) and editing (initial values + onCancel)
 function SubmissionForm({
@@ -14,13 +14,26 @@ function SubmissionForm({
   const [status, setStatus] = useState(initialStatus)
   const [notes, setNotes] = useState(initialNotes)
 
+  const submittingRef = useRef(false)
+
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const saved = await onSubmit({ status, notes })
 
-    if (saved && !onCancel) {
-      setStatus('in_progress')
-      setNotes('')
+    if (submittingRef.current || submitting) return
+
+    submittingRef.current = true
+
+    try {
+      const saved = await onSubmit({ status, notes })
+
+      if (saved && !onCancel) {
+        setStatus('in_progress')
+        setNotes('')
+      }
+    } catch (error) {
+      console.error('Submission failed:', error)
+    } finally {
+      submittingRef.current = false
     }
   }
 
