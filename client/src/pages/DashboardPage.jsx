@@ -1,5 +1,6 @@
 import PriorityBadge from '../components/PriorityBadge.jsx'
 import { formatDue } from '../formatDue.js'
+import { getGreeting } from '../getGreeting.js'
 
 function DashboardPage({
   courses,
@@ -15,7 +16,7 @@ function DashboardPage({
       <>
         <section className="welcome-section">
           <div>
-            <h1>Good morning!</h1>
+            <h1>{getGreeting()}</h1>
             <p>Here is your coursework at a glance.</p>
           </div>
         </section>
