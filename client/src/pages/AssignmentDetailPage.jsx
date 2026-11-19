@@ -200,6 +200,13 @@ function AssignmentDetailPage({ courses, assignments, loading }) {
         <PriorityBadge priority={assignment.priority} />
       </section>
 
+      {assignment.description?.trim() && (
+        <section className="content-card">
+          <h2>Instructions</h2>
+          <p style={{ whiteSpace: 'pre-wrap' }}>{assignment.description}</p>
+        </section>
+      )}
+
       <section className="content-card">
         <h2>Submissions ({submissions.length})</h2>
 
@@ -269,13 +276,16 @@ function AssignmentDetailPage({ courses, assignments, loading }) {
           <p className="empty-message" role="alert">{deleteError}</p>
         )}
 
-        {role === 'student' && !hasSubmitted && (
-          <SubmissionForm
-            onSubmit={createSubmission}
-            submitting={submitting}
-            errors={formErrors}
-          />
-        )}
+        {role === 'student' &&
+          !submissionsLoading &&
+          !submissionsError &&
+          !hasSubmitted && (
+            <SubmissionForm
+              onSubmit={createSubmission}
+              submitting={submitting}
+              errors={formErrors}
+            />
+          )}
       </section>
     </>
   )
